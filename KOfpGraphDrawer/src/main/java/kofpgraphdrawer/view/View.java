@@ -1,6 +1,7 @@
 package kofpgraphdrawer.view;
 
 import java.awt.Point;
+import kofpgraphdrawer.controller.Controller;
 
 public class View implements IView{
     
@@ -9,32 +10,27 @@ public class View implements IView{
     
     @Override
     public Point nodeToAdd() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Point nodeToDel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Point[] nodeToMove() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override
     public Point[] edgeToAdd() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override
     public Point[] edgeToDel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void refreshGUI() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override
@@ -44,17 +40,38 @@ public class View implements IView{
 
     @Override
     public void isFanPlanar(boolean result) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void setError(String error) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        mainGUI.getInfoPanel().setTextOfLogArea(error);
     }
 
     @Override
     public String getPath() {
         return mainGUI.filePath;
+    }
+    
+    @Override
+    public int getRadius(){
+        return mainGUI.getGraphPanel().getCircle().getWidth()/2;
+    }
+    
+    @Override
+    public Point getCenterOfGraphPanel(){
+        int x = (int)Math.round(mainGUI.getGraphPanel().getWidth()/2);
+        int y = (int)Math.round(mainGUI.getGraphPanel().getHeigth()/2);
+        
+        return new Point(x,y);
+    }
+    
+    @Override
+    public void refreshGUI() {
+        
+        //sono sicuro che questi qua devono starci sicuramente
+        mainGUI.repaint();
+        mainGUI.getGraphPanel().revalidate();
+        mainGUI.getGraphPanel().repaint();
     }
     
     public void openMainGUI() { 
@@ -69,6 +86,11 @@ public class View implements IView{
         if(view == null)
             view = new View();
         return view;
+    }
+
+    @Override
+    public int nodesToGenerate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

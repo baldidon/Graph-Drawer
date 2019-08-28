@@ -44,5 +44,8 @@ public interface IView {
     
     public String getPath();
     
+    //oltre al raggio, devo ottenere il centro di graphPanel
     public int getRadius();
+    
+    public Point getCenterOfGraphPanel();
 }

@@ -229,7 +229,7 @@ public class MainGUI extends JFrame implements ActionListener{
                
           }
           else{
-               this.infoPanel.addTextToLogArea("zoom in max reached");
+               this.infoPanel.setTextOfLogArea("zoom in max reached");
                this.zoomInButton.setEnabled(false);
           }
     }
@@ -243,7 +243,7 @@ public class MainGUI extends JFrame implements ActionListener{
         
         }
         else{
-               this.infoPanel.addTextToLogArea("zoom out max reached");
+               this.infoPanel.setTextOfLogArea("zoom out max reached");
                this.zoomOutButton.setEnabled(false);
         }
     }
@@ -255,14 +255,14 @@ public class MainGUI extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent event){//DEVO GESTIRE DUE AZIONI CON LO STESSO ACTION PERFORMED
 				
         if(event.getSource() == saveButton){
-            this.infoPanel.addTextToLogArea("saving file..");
+            this.infoPanel.setTextOfLogArea("saving file..");
             fileHandler = new GMLFileHandler(this,SAVE_FILE,FileDialog.SAVE);
             filePath = fileHandler.getPathFile();
             Controller.getInstance().update("saveToFile");           
         }
         
         else if(event.getSource() == loadButton){
-            this.infoPanel.addTextToLogArea("loading file..");
+            this.infoPanel.setTextOfLogArea("loading file..");
             fileHandler = new GMLFileHandler(this,LOAD_FILE,FileDialog.LOAD);
             filePath = fileHandler.getPathFile();
             Controller.getInstance().clearGraph();
@@ -279,13 +279,13 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.saveButton.setVisible(true);
                 this.zoomOutButton.setVisible(true);
                 
-                this.infoPanel.addTextToLogArea("File imported succesfully!");
+                this.infoPanel.setTextOfLogArea("File imported succesfully!");
                 //da mettere nel refreshGUI()
                 //View.getInstance().
                 //this.graphPanel.repaint();
             }
             else
-                this.infoPanel.addTextToLogArea("Error in importing file!");
+                this.infoPanel.setTextOfLogArea("Error in importing file!");
         }
         
         
@@ -295,12 +295,12 @@ public class MainGUI extends JFrame implements ActionListener{
                 switch (n) {
                     case 0:
                         try{
-                            this.infoPanel.addTextToLogArea("'insert node' mode enabled");    
+                            this.infoPanel.setTextOfLogArea("'insert node' mode enabled");    
                             this.graphPanel.setNumberOfNodes(Integer.valueOf(JOptionPane.showInputDialog(this, "number of nodes to add")));
                             this.saveButton.setVisible(true);
                         }
                         catch(NumberFormatException nfe){
-                            this.infoPanel.addTextToLogArea("error in runtime \nno nodes added to graph");
+                            this.infoPanel.setTextOfLogArea("error in runtime \nno nodes added to graph");
                         }   //per ora utile, ma da cambiare appena possibile
                         this.insertNodeButton.doClick();
                         this.removeNodesButton.setVisible(true);
@@ -314,7 +314,7 @@ public class MainGUI extends JFrame implements ActionListener{
                         this.zoomOutButton.setVisible(true);
                         break;
                     case 1:
-                        this.infoPanel.addTextToLogArea("'insert node' mode enabled");
+                        this.infoPanel.setTextOfLogArea("'insert node' mode enabled");
                         this.graphPanel.setSelectionForNodes(true);
                         this.graphPanel.setRemovable(false,false);
                         this.graphPanel.setSelectionForEdges(false);
@@ -341,7 +341,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 }
             }
             else if(this.insertNodeButton.isSelected()){
-                this.infoPanel.addTextToLogArea("'insert node' mode enabled");    
+                this.infoPanel.setTextOfLogArea("'insert node' mode enabled");    
                 this.graphPanel.setSelectionForNodes(true);
                 this.graphPanel.setRemovable(false,false);
                 this.graphPanel.setSelectionForEdges(false);
@@ -360,7 +360,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.moveButton.setEnabled(false);
             }
             else{
-                this.infoPanel.addTextToLogArea("'insert node' disabled");
+                this.infoPanel.setTextOfLogArea("'insert node' disabled");
                 this.graphPanel.setSelectionForNodes(false);
                 this.removeNodesButton.setVisible(true);
                 this.removeEdgesButton.setVisible(true);
@@ -380,7 +380,7 @@ public class MainGUI extends JFrame implements ActionListener{
         else if(event.getSource() == insertEdgeButton){
             if(this.insertEdgeButton.isSelected() == true){
                 doCliqueButton.setEnabled(false);
-                this.infoPanel.addTextToLogArea("'insert edge' mode enabled");
+                this.infoPanel.setTextOfLogArea("'insert edge' mode enabled");
                 this.graphPanel.setSelectionForEdges(true);
                 this.graphPanel.setSelectionForNodes(false);
                 this.graphPanel.setRemovable(false,false);
@@ -390,7 +390,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.moveButton.setEnabled(false);
             }else{
                 doCliqueButton.setEnabled(true);
-                this.infoPanel.addTextToLogArea("'insert edge' mode disabled");
+                this.infoPanel.setTextOfLogArea("'insert edge' mode disabled");
                 this.graphPanel.setSelectionForEdges(false);
                 this.insertNodeButton.setEnabled(true);
                 this.removeNodesButton.setEnabled(true);
@@ -402,26 +402,26 @@ public class MainGUI extends JFrame implements ActionListener{
         }
         else if(event.getSource() == zoomInButton){
             zoomIn();
-            this.infoPanel.addTextToLogArea("zoom in! Scale factor: " + SCALE_DRAW[SCALE_INDEX]);
+            this.infoPanel.setTextOfLogArea("zoom in! Scale factor: " + SCALE_DRAW[SCALE_INDEX]);
             this.graphPanel.revalidate();
             this.graphPanel.repaint();
 
         }
         else if(event.getSource() == zoomOutButton){
             zoomOut();
-            this.infoPanel.addTextToLogArea("zoom out! Scale factor: " +SCALE_DRAW[SCALE_INDEX]);
+            this.infoPanel.setTextOfLogArea("zoom out! Scale factor: " +SCALE_DRAW[SCALE_INDEX]);
             this.graphPanel.revalidate();
             this.graphPanel.repaint();
             
         }
         else if(event.getSource() == doCliqueButton){
-            this.infoPanel.addTextToLogArea("clique!");
+            this.infoPanel.setTextOfLogArea("clique!");
             this.graphPanel.setClique();
             
         }
         else if(event.getSource() == removeNodesButton){
             if(this.removeNodesButton.isSelected() == true){
-                this.infoPanel.addTextToLogArea("'remove node' mode enabled");
+                this.infoPanel.setTextOfLogArea("'remove node' mode enabled");
                 this.graphPanel.setMovable(false);
                 this.insertEdgeButton.setEnabled(false);
                 this.insertNodeButton.setEnabled(false);
@@ -433,7 +433,7 @@ public class MainGUI extends JFrame implements ActionListener{
                     this.graphPanel.setRemovable(true,false);           
             }
             else{
-                this.infoPanel.addTextToLogArea("'remove node' mode disabled");
+                this.infoPanel.setTextOfLogArea("'remove node' mode disabled");
                 this.graphPanel.setRemovable(false,false);
                 this.moveButton.setEnabled(true);
                 this.insertEdgeButton.setEnabled(true);
@@ -444,7 +444,7 @@ public class MainGUI extends JFrame implements ActionListener{
         }
         else if(event.getSource() == removeEdgesButton){
             if(this.removeEdgesButton.isSelected() == true){    
-                this.infoPanel.addTextToLogArea("'remove edges' mode enabled");
+                this.infoPanel.setTextOfLogArea("'remove edges' mode enabled");
                 this.graphPanel.setMovable(false);
                 this.insertEdgeButton.setEnabled(false);
                 this.insertNodeButton.setEnabled(false);
@@ -457,7 +457,7 @@ public class MainGUI extends JFrame implements ActionListener{
                     this.graphPanel.setRemovable(false, true);
             }
             else{
-                this.infoPanel.addTextToLogArea("'remove edges' mode disabled");
+                this.infoPanel.setTextOfLogArea("'remove edges' mode disabled");
                 this.graphPanel.setRemovable(false,false);
                 this.moveButton.setEnabled(true);
                 this.insertEdgeButton.setEnabled(true);
@@ -469,14 +469,14 @@ public class MainGUI extends JFrame implements ActionListener{
         }
         else if(event.getSource() == moveButton){
             if(this.moveButton.isSelected() == true && !this.graphPanel.nodes.isEmpty()){
-                this.infoPanel.addTextToLogArea("free mode enabled");
+                this.infoPanel.setTextOfLogArea("free mode enabled");
                 this.graphPanel.setMovable(true);
                 this.graphPanel.setRemovable(false,false);
                 this.removeNodesButton.setEnabled(false);
                 this.removeEdgesButton.setEnabled(false);
             }
             else if(this.moveButton.isSelected() == false){
-                this.infoPanel.addTextToLogArea("free mode disabled");
+                this.infoPanel.setTextOfLogArea("free mode disabled");
                 this.graphPanel.setMovable(false);
                 this.removeNodesButton.setEnabled(true);
                 this.removeEdgesButton.setEnabled(true);
@@ -507,7 +507,7 @@ public class MainGUI extends JFrame implements ActionListener{
             try{
                 int k = Integer.valueOf(JOptionPane.showInputDialog(this, "Insert k parameter"));
                 boolean ris = this.graphPanel.fanPlanarityOfGraph(k);
-                this.infoPanel.addTextToLogArea("The graph is " + k + " fan-planar:" + ris);
+                this.infoPanel.setTextOfLogArea("The graph is " + k + " fan-planar:" + ris);
                 
                 
                 //dopo 5 secondi, mi decolora gli archi selezionati che non mi danno la fan-planarità
@@ -521,7 +521,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 timer.schedule(task, 5000);
             }
             catch(NumberFormatException nfe){
-                this.infoPanel.addTextToLogArea("error in runtime \nFor k parameter, insert a number\n");
+                this.infoPanel.setTextOfLogArea("error in runtime \nFor k parameter, insert a number\n");
             }
         }
     }

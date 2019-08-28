@@ -24,10 +24,12 @@ public class Controller implements IController{
                 break;
                 
             case "addMultipleNodes":
-                for(int i=0; i<View.getInstance().nodesToGenerate(); i++){
-                    Model.getInstance.add
+                int t = View.getInstance().nodesToGenerate();
+                for(int i=0; i<t; i++){
+                    Model.getInstance.addNode(this.generatePoint(i, t));
                 }
-            
+                break;
+                
             case "delNode":
                 if(!Model.getInstance().delNode(View.getInstance().nodeToDel())){
                     View.getInstance().setError("Error in removing node");
@@ -150,19 +152,23 @@ public class Controller implements IController{
         return Model.getInstance().clearGraph();
     }
     
-    
-    public static IController getInstance(){
-        if(controller == null)
-            controller = new Controller();
-        return controller;
-    }
-    
     public static void main(String[] args){
         View.getInstance().openMainGUI();
     }
     
     private Point generatePoint(int index, int length){
         
+        double t = 2 * Math.PI * index / length;
+        int x = (int) Math.round(w + (View.getInstance().getRadius())* Math.cos(t));
+        int y = (int) Math.round(h + (View.getInstance().getRadius())* Math.sin(t));
+            
+        return new Point(x, y);
+    }
+        
+    public static IController getInstance(){
+        if(controller == null)
+            controller = new Controller();
+        return controller;
     }
     
 }
