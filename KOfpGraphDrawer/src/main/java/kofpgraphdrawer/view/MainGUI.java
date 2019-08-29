@@ -94,6 +94,7 @@ public class MainGUI extends JFrame implements ActionListener{
 
     //private int numberOfClicksForInsertNodeButton =0;
     private int SCALE_INDEX ;
+    public static double scaleFactor =0;
 
     
     protected static MainGUI mainGui = null;
@@ -226,7 +227,7 @@ public class MainGUI extends JFrame implements ActionListener{
     private void zoomIn(){
           if((this.SCALE_INDEX+1)< SCALE_DRAW.length){
                this.zoomOutButton.setEnabled(true);
-               this.SCALE_INDEX++;
+               MainGUI.scaleFactor = this.SCALE_INDEX++;
                this.graphPanel.setScaleFactor(SCALE_DRAW[this.SCALE_INDEX]);
                
           }
@@ -541,6 +542,10 @@ public class MainGUI extends JFrame implements ActionListener{
     
     protected int getKOfpValue(){
         return kOfpValue;
+    }
+    
+    protected static double getScaleFactor() {
+        return MainGUI.scaleFactor;
     }
 
 }
