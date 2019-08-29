@@ -19,6 +19,7 @@ public interface IController {
     
     public ArrayList<String> getEdgesLabels();
     
-    public boolean clearGraph();
+    public boolean getColourCritalEdges();
     
+    public void setColourCriticalEdges(boolean b);
 }

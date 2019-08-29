@@ -10,6 +10,7 @@ public class Controller implements IController{
     
     private String filePath;
     private Point[] points;
+    private boolean colourCriticalEdges;
     
     @Override
     public boolean update(String command){
@@ -31,6 +32,7 @@ public class Controller implements IController{
                 break;
                 
             case "delNode":
+                //TO-DO elimina anche gli archi del nodo
                 if(!Model.getInstance().delNode(View.getInstance().nodeToDel())){
                     View.getInstance().setError("Error in removing node");
                     result=false;
@@ -54,6 +56,7 @@ public class Controller implements IController{
             case "addEdge":
                 points = View.getInstance().edgeToAdd();
                 if(points.length==2){
+                    //TO-DO controlla nel model se c'è un arco uguale (stessi punti)
                     if(!Model.getInstance().addEdge(points[0], points[1])){
                         View.getInstance().setError("Error in add edge");
                         result=false;
@@ -66,7 +69,7 @@ public class Controller implements IController{
                 break;
                 
             case "delEdge":
-                points = View.getInstance().edgeToAdd();
+                points = View.getInstance().edgeToDel();
                 if(points.length==2){
                     if(!Model.getInstance().delEdge(points[0], points[1])){
                         View.getInstance().setError("Error in del edge");
@@ -88,6 +91,8 @@ public class Controller implements IController{
             
             case "isFanPlanar":
                 result = Model.getInstance().isFanPlanar(View.getInstance().getKValueForFanPlanarity());
+                if(!result)
+                    colourCriticalEdges=true;
                 //View.getInstance().isFanPlanar(risKFP);
                 break;
                 
@@ -125,6 +130,14 @@ public class Controller implements IController{
         View.getInstance().refreshGUI();
         return result;
     }
+    
+    public boolean getColourCritalEdges(){
+        return colourCriticalEdges;
+    }
+    
+    public void setColourCriticalEdges(boolean b){
+        this.colourCriticalEdges=b;
+    }
 
     @Override
     public ArrayList<Point> getGraphNodes() {
@@ -144,11 +157,6 @@ public class Controller implements IController{
     @Override
     public ArrayList<String> getEdgesLabels() {
         return Model.getInstance().getEdgeLabels();
-    }
-    
-    @Override
-    public boolean clearGraph(){
-        return Model.getInstance().clearGraph();
     }
     
     private Point generatePoint(int index, int length){

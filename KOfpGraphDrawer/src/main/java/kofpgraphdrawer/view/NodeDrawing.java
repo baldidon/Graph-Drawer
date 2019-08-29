@@ -46,7 +46,6 @@ public class NodeDrawing /*extends AbstractDrawing*/{
         //this.angle = Math.PI*3;
     }
     
-    
     protected void draw(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
         
@@ -101,6 +100,10 @@ public class NodeDrawing /*extends AbstractDrawing*/{
         double y = ((this.node.getY() + NodeDrawing.DEFAULT_DIMENSION/2)-h)*rateFactor+h;
         this.setRect(x-NodeDrawing.DEFAULT_DIMENSION/2, y-NodeDrawing.DEFAULT_DIMENSION/2);
     }*/
+    
+    public Rectangle2D.Double getFrameOfNode(){
+        return this.node;
+    }
     
     
     private void setRect(double d, double d0) {

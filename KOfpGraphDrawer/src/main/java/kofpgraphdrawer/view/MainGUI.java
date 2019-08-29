@@ -268,20 +268,7 @@ public class MainGUI extends JFrame implements ActionListener{
             this.infoPanel.setTextOfLogArea("loading file..");
             fileHandler = new GMLFileHandler(this,LOAD_FILE,FileDialog.LOAD);
             filePath = fileHandler.getPathFile();
-            Controller.getInstance().clearGraph();
             if(Controller.getInstance().update("loadFromFile")){
-                
-                /*this.removeNodesButton.setVisible(true);
-                this.removeEdgesButton.setVisible(true);
-                this.doCliqueButton.setVisible(true);
-                this.moveButton.setVisible(true);
-                this.clearButton.setVisible(true);
-                this.fanPlanarButton.setVisible(true);
-                this.zoomInButton.setVisible(true);
-                this.insertEdgeButton.setVisible(true);
-                this.saveButton.setVisible(true);
-                this.zoomOutButton.setVisible(true);
-                */
                 this.infoPanel.setTextOfLogArea("File imported succesfully!");
                 //da mettere nel refreshGUI()
                 //View.getInstance().
@@ -319,9 +306,11 @@ public class MainGUI extends JFrame implements ActionListener{
                         
                     case 1:
                         this.infoPanel.setTextOfLogArea("'manual insert node' mode enabled");
+                        
                         this.graphPanel.setSelectionForNodes(true);
                         this.graphPanel.setRemovable(false,false);
                         this.graphPanel.setSelectionForEdges(false);
+                        
                         this.zoomInButton.setEnabled(true);
                         this.zoomOutButton.setEnabled(true);
                         this.insertEdgeButton.setEnabled(false);
@@ -513,7 +502,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
-                        View.getInstance().getGraphPanel().clearSelectionOfEdges();
+                        Controller.getInstance().setColourCriticalEdges(false);
                     }
                 };
                 timer.schedule(task, 5000);
