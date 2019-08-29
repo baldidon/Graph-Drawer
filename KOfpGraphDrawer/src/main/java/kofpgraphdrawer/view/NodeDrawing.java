@@ -11,12 +11,7 @@ import java.awt.geom.Rectangle2D;
 
 
 public class NodeDrawing /*extends AbstractDrawing*/{
-    /*
-    la mia idea era quella di collegare node del model, con la rappresentazione grafica per mezzo di questa classe
-    devo riuscire a collegare il nodo con tutta la circonferenza
-    ogni nodo lo devo vedere come come un oggetto    
-    */
-    
+
     private double x;
     private double y;
     private String label;
@@ -38,7 +33,7 @@ public class NodeDrawing /*extends AbstractDrawing*/{
         this.node = new Rectangle2D.Double();
     }
     
-    //costruttore , dove gli passo le coordinate del centro del nodo relative rispetto al centro del pannello
+    //costruttore, dove gli passo le coordinate del centro del nodo relative rispetto al centro del pannello
     protected NodeDrawing(Point p, GraphPanel graphPanel){
         this.graphPanel = graphPanel;
         this.x = p.getX() + this.graphPanel.getWidth()/2;

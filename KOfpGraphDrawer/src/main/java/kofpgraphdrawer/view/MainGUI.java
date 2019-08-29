@@ -227,8 +227,8 @@ public class MainGUI extends JFrame implements ActionListener{
     private void zoomIn(){
           if((this.SCALE_INDEX+1)< SCALE_DRAW.length){
                this.zoomOutButton.setEnabled(true);
-               MainGUI.scaleFactor = this.SCALE_INDEX++;
-               this.graphPanel.setScaleFactor(SCALE_DRAW[this.SCALE_INDEX]);
+               this.SCALE_INDEX++;
+               MainGUI.scaleFactor = SCALE_DRAW[this.SCALE_INDEX];
                
           }
           else{
@@ -241,7 +241,7 @@ public class MainGUI extends JFrame implements ActionListener{
         if(this.SCALE_INDEX >0){
                this.zoomInButton.setEnabled(true);
                this.SCALE_INDEX--;
-               this.graphPanel.setScaleFactor(SCALE_DRAW[this.SCALE_INDEX]);
+               MainGUI.scaleFactor = SCALE_DRAW[this.SCALE_INDEX];
                   
         
         }
@@ -547,5 +547,4 @@ public class MainGUI extends JFrame implements ActionListener{
     protected static double getScaleFactor() {
         return MainGUI.scaleFactor;
     }
-
 }
