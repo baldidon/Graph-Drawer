@@ -102,14 +102,14 @@ public class InfoPanel extends JPanel{
         this.add(scrollStatusArea);
     }
     
-    protected void setTextOFStatusAreaOnlyForDebugging(){
+    protected void clearStatusArea(){
         //this.statusArea.setText(null);
         this.nodeList.removeAllChildren();
         this.edgeList.removeAllChildren();
         this.tree.updateUI();
     }
     
-    protected void setTextOFLogAreaOnlyForDebugging(){
+    protected void clearLogArea(){
         this.logArea.setText("new session started");
     }
 
@@ -149,6 +149,11 @@ public class InfoPanel extends JPanel{
         this.statusArea.append("\n" + s);
     }
     
+    protected void clearInfoPanel(){
+        this.clearStatusArea();
+        this.clearLogArea();
+        
+    }
     /*
     public static InfoPanel getInstance(){
 			

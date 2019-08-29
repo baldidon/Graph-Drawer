@@ -306,16 +306,7 @@ public class MainGUI extends JFrame implements ActionListener{
                             }    
                             else{
                                 Controller.getInstance().update("addMultipleNodes");
-                                this.saveButton.setVisible(true);
-                                this.removeNodesButton.setVisible(true);
-                                this.removeEdgesButton.setVisible(true);
-                                this.doCliqueButton.setVisible(true);
-                                this.moveButton.setVisible(true);
-                                this.clearButton.setVisible(true);
-                                this.fanPlanarButton.setVisible(true);
-                                this.insertEdgeButton.setVisible(true);
-                                this.zoomInButton.setVisible(true);
-                                this.zoomOutButton.setVisible(true);
+                               
                             }
                         }
                         catch(NumberFormatException nfe){
@@ -325,16 +316,16 @@ public class MainGUI extends JFrame implements ActionListener{
                         break;
                         
                     case 1:
-                        
                         this.infoPanel.setTextOfLogArea("'manual insert node' mode enabled");
+                        /*
                         this.graphPanel.setSelectionForNodes(true);
                         this.graphPanel.setRemovable(false,false);
                         this.graphPanel.setSelectionForEdges(false);
+                        */
                         this.insertEdgeButton.setEnabled(false);
                         this.removeNodesButton.setEnabled(false);
                         this.removeEdgesButton.setEnabled(false);
                         this.moveButton.setEnabled(false);
-                        Controller.getInstance().update("addNode");
                         break;
                     case 2:
                         this.insertNodeButton.doClick();
@@ -345,16 +336,11 @@ public class MainGUI extends JFrame implements ActionListener{
             }
             else if(this.insertNodeButton.isSelected()){
                 this.infoPanel.setTextOfLogArea("'insert node' mode enabled");    
+                
                 this.graphPanel.setSelectionForNodes(true);
                 this.graphPanel.setRemovable(false,false);
                 this.graphPanel.setSelectionForEdges(false);
-                this.removeNodesButton.setVisible(true);
-                this.removeEdgesButton.setVisible(true);
-                this.doCliqueButton.setVisible(true);
-                this.moveButton.setVisible(true);
-                this.clearButton.setVisible(true);
-                this.fanPlanarButton.setVisible(true);
-                this.insertEdgeButton.setVisible(true);
+                
                 this.zoomInButton.setEnabled(true);
                 this.zoomOutButton.setEnabled(true);
                 this.insertEdgeButton.setEnabled(false);
@@ -365,13 +351,6 @@ public class MainGUI extends JFrame implements ActionListener{
             else{
                 this.infoPanel.setTextOfLogArea("'insert node' disabled");
                 this.graphPanel.setSelectionForNodes(false);
-                this.removeNodesButton.setVisible(true);
-                this.removeEdgesButton.setVisible(true);
-                this.insertEdgeButton.setVisible(true);
-                this.doCliqueButton.setVisible(true);
-                this.moveButton.setVisible(true);
-                this.clearButton.setVisible(true);
-                this.fanPlanarButton.setVisible(true);
                 
                 this.insertEdgeButton.setEnabled(true);
                 this.removeNodesButton.setEnabled(true);
@@ -490,8 +469,7 @@ public class MainGUI extends JFrame implements ActionListener{
         }
         else if(event.getSource() == clearButton){
             if(JOptionPane.showConfirmDialog(this,"Are you sure to clear the workspace?\n","CAUTION", JOptionPane.YES_NO_OPTION)==0){
-                View.getInstance().clearStatusArea();
-                View.getInstance().clearLogArea();
+                this.infoPanel.clearInfoPanel();
                 this.graphPanel.clearWorkspace();
                 //numberOfClicksForInsertNodeButton = 0;
                 this.graphPanel.setMovable(false);
