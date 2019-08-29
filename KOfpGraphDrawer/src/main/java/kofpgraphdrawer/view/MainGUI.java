@@ -423,11 +423,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.insertEdgeButton.setEnabled(false);
                 this.insertNodeButton.setEnabled(false);
                 this.moveButton.setEnabled(false);
-                this.doCliqueButton.setEnabled(false);   
-                
-                /*if(this.graphPanel.nodes.isEmpty())
-                    JOptionPane.showMessageDialog(this, "ERROR \n NO NODES TO REMOVE!!!!","Error message", JOptionPane.ERROR_MESSAGE);
-                else*/
+                this.doCliqueButton.setEnabled(false);
             }
             else{
                 this.infoPanel.setTextOfLogArea("'remove node' mode disabled");
@@ -507,8 +503,8 @@ public class MainGUI extends JFrame implements ActionListener{
         else if(event.getSource() == fanPlanarButton){
             try{
                 kOfpValue = Integer.valueOf(JOptionPane.showInputDialog(this, "Insert k parameter"));
-                boolean ris = this.graphPanel.fanPlanarityOfGraph(k);
-                this.infoPanel.setTextOfLogArea("The graph is " + k + " fan-planar:" + ris);
+                boolean ris = Controller.getInstance().update("isFanPlanar");
+                this.infoPanel.setTextOfLogArea("The graph is " + kOfpValue + " fan-planar:" + ris);
                 
                 
                 //dopo 5 secondi, mi decolora gli archi selezionati che non mi danno la fan-planarità
@@ -546,20 +542,5 @@ public class MainGUI extends JFrame implements ActionListener{
     protected int getKOfpValue(){
         return kOfpValue;
     }
-    /*
-    //per ottenere l'istanza del mainGUI
-    public static MainGUI getInstance(){
-			
-	if(mainGui != null){ //controllo se maingui è stato già istanziato
-
-            return mainGui;
-	}
-	else{
-            mainGui = new MainGUI();
-            return mainGui;
-        }
-    }*/
-        
-
 
 }

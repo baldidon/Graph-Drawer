@@ -80,7 +80,7 @@ public class CircularDrawing  extends AbstractDrawing {
         
     }
     
-    public Ellipse2D.Double getCircle(){
+    public Ellipse2D.Double getFrameOfCircle(){
         return this.circle;
     }
     

@@ -87,9 +87,8 @@ public class Controller implements IController{
                 break;
             
             case "isFanPlanar":
-                boolean risKFP;
-                risKFP = Model.getInstance().isFanPlanar(View.getInstance().getKValueForFanPlanarity());
-                View.getInstance().isFanPlanar(risKFP);
+                result = Model.getInstance().isFanPlanar(View.getInstance().getKValueForFanPlanarity());
+                //View.getInstance().isFanPlanar(risKFP);
                 break;
                 
             case "saveToFile":

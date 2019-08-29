@@ -48,4 +48,8 @@ public interface IView {
     public int getRadius();
     
     public Point getCenterOfGraphPanel();
+    
+    public InfoPanel getInfoPanel();
+    
+    public GraphPanel getGraphPanel();
 }

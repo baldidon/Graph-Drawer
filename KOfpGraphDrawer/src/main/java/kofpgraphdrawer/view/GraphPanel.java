@@ -25,8 +25,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
 
     
     protected int width;
-    protected int height;   
-    protected Graph graph;
+    protected int height;
     protected CircularDrawing circle;
     protected NodeDrawing node;
     protected ArrayList<NodeDrawing> nodes;
@@ -56,13 +55,15 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         this.circle = new CircularDrawing(this);
         this.node = new NodeDrawing(this);
         this.edge = new EdgeDrawing(this);
+        
         this.edges = new ArrayList();
         this.nodes = new ArrayList();
+        
         this.removingNodesAndEdges = false;
         this.removingOnlyEdges = false;
         this.moving = false;
         this.selectingNodesForCreateEdges = false;
-        this.graph = GraphInstance.getInstance().getGraph();
+       
         //per ottenere le info sulla dimensione in tempo reale
         addComponentListener(this);
         addMouseListener(this);
@@ -109,7 +110,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         this.nodes = this.node.setNodes(n);
         
         this.nodes.forEach((no) -> {
-            graph.addNode(no.getLogicalNode());
+            //graph.addNode(no.getLogicalNode());
         });
         
         this.revalidate();
@@ -175,10 +176,11 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         this.setSelectionForEdges(false);
         this.setSelectionForNodes(false);
         this.setMovable(false);
+        
         this.clearWorkspace();
-        this.graph = GraphInstance.getInstance().getGraph();
-        this.graph.nodeFromFile();
-        this.graph.edgeFromFile();
+        
+        Controller.getInstance().getGraphNodes();
+        Controller.getInstance().getGraphEdges();
        
         this.nodes = this.node.setNodesForLogicalNodes(this.graph.getNodeList());
         this.node.rescaleDrawing(this.nodes);
@@ -191,7 +193,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     
     //non funziona, perchè alla creazione di ogni arco o nodo non lo riaggiungo alla lista, eo
     public void saveGraph(){
-        this.graph.saveToFile();
+        Controller.getInstance().update("saveToFile");
     }
     
     public boolean fanPlanarityOfGraph(int k){
@@ -248,13 +250,16 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     public CircularDrawing getCircle(){
         return this.circle;
     }
- 
-    //per gestione eventi del mouse ho dovuto fare ciò
+    
+    //
+    //MOUSE LISTENER METHODS
+    //
+    
     @Override
     public void mouseClicked(MouseEvent e){
         
         if(this.isPossibleAddNode(e.getX(), e.getY())){
-           this.addNode(e.getX(), e.getY());
+            this.addNode(e.getX(), e.getY());
             this.repaint();
             
         }
@@ -293,7 +298,6 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         
         //oltre a rimuovere il nodo, elimino anche gli archi che iniziavano o finivano in quel nodo; roba orribile lo so
         else if(isPossibleToRemoveNodes()){
-            //fisso la lunghezza qua perchè altrimenti ad ogni iterazione la lunhezza della lista diminuirebbe!!
             this.removeNodes(e.getX(), e.getY());
         }
         
@@ -328,11 +332,10 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     @Override
     public void mouseMoved(MouseEvent e){}
     
-
-
+    //
+    //componentListener Methods
+    //
     
-    
-    //componentListener
     @Override
     public void componentHidden(ComponentEvent e) {}
     
@@ -372,6 +375,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     }
     
     private NodeDrawing addNode(double x, double y){
+        
         Point mouseCoordinates = new Point(x, y);
          NodeDrawing n = new NodeDrawing(x - this.node.getDrawingWidth()/2,y - this.node.getDrawingWidth()/2,this);
             if(this.nodes.isEmpty()){
@@ -395,33 +399,9 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                 Controller.getInstance().update("addNode");
             }
         return n;
-    }
-    /*
-    private NodeDrawing[] selectedNodesForAddEdge(double x, double y){
-        NodeDrawing[] selectedNodes = new NodeDrawing[2];
-        for(int i =0; i<this.nodes.size();i++){
-                if(this.nodes.get(i).getFrameOfNode().contains(x,y) && n1 == null){
-                    n1 = this.nodes.get(i);
-                    View.getInstance().addTextToLogArea("node "+this.nodes.get(i).getLogicalNode().getLabel()+" selected!");
-                    
-                    //appena seleziono il nodo, lo coloro di rosso
-                    this.nodes.get(i).isSelected(true);
-                    this.repaint();
-                    selectedNodes[0] = n1;
-                }
-                else if(this.nodes.get(i).getFrameOfNode().contains(x,y) && n1!=null && this.nodes.get(i) != n1){
-                    n2 = this.nodes.get(i);
-                    View.getInstance().addTextToLogArea("node "+this.nodes.get(i).getLogicalNode().getLabel()+" selected!");
-                    
-                    //appena seleziono il nodo, lo coloro di rosso
-                    this.nodes.get(i).isSelected(true);
-                    this.repaint();
-                    selectedNodes[1] = n2;
-                }
-        }
-        return selectedNodes;
         
-    }*/
+    }
+
     
     private EdgeDrawing addEdge(NodeDrawing n1, NodeDrawing n2){
         boolean toAdd = true;
@@ -448,7 +428,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
             this.edges.add(ed);
             View.getInstance().addTextToLogArea("nodes from "+n1.getLogicalNode().getLabel()+" to "+n2.getLogicalNode().getLabel()+" created");
             View.getInstance().addEdgeToStatusArea(ed.getLogicalEdge().toString());
-            GraphInstance.getInstance().addEdge(ed.getLogicalEdge());
+            Controller.getInstance().update("addEdge");
         }
         //System.out.println(this.edges.size());
         for(NodeDrawing n : this.nodes)

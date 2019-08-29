@@ -10,9 +10,14 @@ public class View implements IView{
     
     @Override
     public Point nodeToAdd() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new Point();
     }
-
+    
+    @Override
+    public int nodesToGenerate() {
+        return mainGUI.numberOfNodesToGenerateAutomatically;
+    }
+    
     @Override
     public Point nodeToDel() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -40,6 +45,7 @@ public class View implements IView{
 
     @Override
     public void isFanPlanar(boolean result) {
+       this.ris = result;
     }
 
     @Override
@@ -54,13 +60,13 @@ public class View implements IView{
     
     @Override
     public int getRadius(){
-        return mainGUI.getGraphPanel().getCircle().getWidth()/2;
+        return mainGUI.getGraphPanel().getCircle().getFrameOfCircle().getWidth()/2;
     }
     
     @Override
     public Point getCenterOfGraphPanel(){
         int x = (int)Math.round(mainGUI.getGraphPanel().getWidth()/2);
-        int y = (int)Math.round(mainGUI.getGraphPanel().getHeigth()/2);
+        int y = (int)Math.round(mainGUI.getGraphPanel().getHeight()/2);
         
         return new Point(x,y);
     }
@@ -78,6 +84,16 @@ public class View implements IView{
         mainGUI.getGraphPanel().repaint();
     }
     
+    @Override   
+    public InfoPanel getInfoPanel(){
+        return mainGUI.getInfoPanel();
+    }
+    
+    @Override
+    public GraphPanel getGraphPanel(){
+        return mainGUI.getGraphPanel();
+    }
+    
     public void openMainGUI() { 
       javax.swing.SwingUtilities.invokeLater(() -> {
           if (mainGUI == null)
@@ -86,15 +102,13 @@ public class View implements IView{
       });
     }
     
+
+    
     public static IView getInstance(){
         if(view == null)
             view = new View();
         return view;
     }
 
-    @Override
-    public int nodesToGenerate() {
-        return mainGUI.numberOfNodesToGenerateAutomatically;
-    }
-    
+
 }
