@@ -368,7 +368,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     //
     
     private boolean isPossibleAddNode(double x, double y){
-        if(this.circle.circumnferecneContains(x,y)==true && this.selecting == true && removingNodesAndEdges == false && removingOnlyEdges == false)
+        if(this.circle.circleContains(x,y)==true && this.selecting == true && removingNodesAndEdges == false && removingOnlyEdges == false)
             return true;
         else
             return false;

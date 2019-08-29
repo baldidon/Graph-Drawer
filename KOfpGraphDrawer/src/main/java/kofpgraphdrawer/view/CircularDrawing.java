@@ -9,7 +9,7 @@ import java.awt.geom.*;
  
 
 
-public class CircularDrawing  extends AbstractDrawing {
+public class CircularDrawing {
     
     //creo abstractDrawing, mi tornerà utile per la rappresentazione di nodi, archi
 
@@ -29,8 +29,7 @@ public class CircularDrawing  extends AbstractDrawing {
                                             QUADRATO_INSCRITTA_CIRCONFERENZA);
     }
 
-   //disegna la circonferenza
-    @Override
+    //disegna la circonferenza
     public void draw(Graphics g) {
        Graphics2D g2d = (Graphics2D)g; //cast esplicito per lavorare con i metodi di graphics2D
        this.rescaleDrawing();
@@ -44,15 +43,8 @@ public class CircularDrawing  extends AbstractDrawing {
        g2d.draw(this.circle);
        
     }
-    protected int getDrawingWidth(){
-        return (int)(this.circle.getX()+this.circle.getWidth());
-    }
-
-    protected int getDrawingHeight(){
-        return (int)(this.circle.getY() + this.circle.getWidth());
-    }
     
-    public boolean circumnferecneContains(double x, double y){
+    public boolean circleContains(double x, double y){
         this.rescaleDrawing();
         Ellipse2D.Double circlem = new Ellipse2D.Double(this.circle.getX()+5, this.circle.getY()+5, this.circle.getWidth()-10, this.circle.getHeight()-10);
         Ellipse2D.Double circleM = new Ellipse2D.Double(this.circle.getX()-5,this.circle.getY()-5,this.circle.getWidth()+10,this.circle.getHeight()+10);
@@ -84,16 +76,13 @@ public class CircularDrawing  extends AbstractDrawing {
         return this.circle;
     }
     
-
-    @Override
     public void rescaleDrawing(){
         double w = this.graphPanel.getWidth()/2;
         double h = this.graphPanel.getHeight()/2;
-          this.circle.setFrame(w - QUADRATO_INSCRITTA_CIRCONFERENZA/2*(this.scaleFactor),
-                                h - QUADRATO_INSCRITTA_CIRCONFERENZA/2*(this.scaleFactor),
-                               QUADRATO_INSCRITTA_CIRCONFERENZA*(this.scaleFactor),
-                               QUADRATO_INSCRITTA_CIRCONFERENZA*(this.scaleFactor)
-          );
+          this.circle.setFrame(w - QUADRATO_INSCRITTA_CIRCONFERENZA/2*(MainGUI.getScaleFactor()),
+                                h - QUADRATO_INSCRITTA_CIRCONFERENZA/2*(MainGUI.getScaleFactor()),
+                               QUADRATO_INSCRITTA_CIRCONFERENZA*(MainGUI.getScaleFactor()),
+                               QUADRATO_INSCRITTA_CIRCONFERENZA*(MainGUI.getScaleFactor()));
    
           
     }
