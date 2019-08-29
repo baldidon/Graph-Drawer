@@ -88,6 +88,7 @@ public class MainGUI extends JFrame implements ActionListener{
     private JToolBar toolBar;
     
     public static String filePath;
+    public int numberOfNodesToGenerateAutomatically;
    
 
     //private int numberOfClicksForInsertNodeButton =0;
@@ -268,7 +269,7 @@ public class MainGUI extends JFrame implements ActionListener{
             Controller.getInstance().clearGraph();
             if(Controller.getInstance().update("loadFromFile")){
                 
-                this.removeNodesButton.setVisible(true);
+                /*this.removeNodesButton.setVisible(true);
                 this.removeEdgesButton.setVisible(true);
                 this.doCliqueButton.setVisible(true);
                 this.moveButton.setVisible(true);
@@ -278,7 +279,7 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.insertEdgeButton.setVisible(true);
                 this.saveButton.setVisible(true);
                 this.zoomOutButton.setVisible(true);
-                
+                */
                 this.infoPanel.setTextOfLogArea("File imported succesfully!");
                 //da mettere nel refreshGUI()
                 //View.getInstance().
@@ -295,43 +296,45 @@ public class MainGUI extends JFrame implements ActionListener{
                 switch (n) {
                     case 0:
                         try{
-                            this.infoPanel.setTextOfLogArea("'insert node' mode enabled");    
-                            this.graphPanel.setNumberOfNodes(Integer.valueOf(JOptionPane.showInputDialog(this, "number of nodes to add")));
-                            this.saveButton.setVisible(true);
+                            this.infoPanel.setTextOfLogArea("'auto insert node' mode enabled");    
+                            //this.graphPanel.setNumberOfNodes(
+                            this.numberOfNodesToGenerateAutomatically = Integer.valueOf(JOptionPane.showInputDialog(this, "number of nodes to add"));
+                            
+                            if(this.numberOfNodesToGenerateAutomatically<1){
+                                JOptionPane.showMessageDialog(this,"ERROR \nthe number must be at least 1!","ERROR",JOptionPane.ERROR_MESSAGE);
+                                this.infoPanel.setTextOfLogArea("error in runtime \nno nodes added to graph");
+                            }    
+                            else{
+                                Controller.getInstance().update("addMultipleNodes");
+                                this.saveButton.setVisible(true);
+                                this.removeNodesButton.setVisible(true);
+                                this.removeEdgesButton.setVisible(true);
+                                this.doCliqueButton.setVisible(true);
+                                this.moveButton.setVisible(true);
+                                this.clearButton.setVisible(true);
+                                this.fanPlanarButton.setVisible(true);
+                                this.insertEdgeButton.setVisible(true);
+                                this.zoomInButton.setVisible(true);
+                                this.zoomOutButton.setVisible(true);
+                            }
                         }
                         catch(NumberFormatException nfe){
                             this.infoPanel.setTextOfLogArea("error in runtime \nno nodes added to graph");
                         }   //per ora utile, ma da cambiare appena possibile
                         this.insertNodeButton.doClick();
-                        this.removeNodesButton.setVisible(true);
-                        this.removeEdgesButton.setVisible(true);
-                        this.doCliqueButton.setVisible(true);
-                        this.moveButton.setVisible(true);
-                        this.clearButton.setVisible(true);
-                        this.fanPlanarButton.setVisible(true);
-                        this.insertEdgeButton.setVisible(true);
-                        this.zoomInButton.setVisible(true);
-                        this.zoomOutButton.setVisible(true);
                         break;
+                        
                     case 1:
-                        this.infoPanel.setTextOfLogArea("'insert node' mode enabled");
+                        
+                        this.infoPanel.setTextOfLogArea("'manual insert node' mode enabled");
                         this.graphPanel.setSelectionForNodes(true);
                         this.graphPanel.setRemovable(false,false);
                         this.graphPanel.setSelectionForEdges(false);
-                        this.saveButton.setVisible(true);
-                        this.removeNodesButton.setVisible(true);
-                        this.removeEdgesButton.setVisible(true);
-                        this.doCliqueButton.setVisible(true);
-                        this.moveButton.setVisible(true);
-                        this.clearButton.setVisible(true);
-                        this.fanPlanarButton.setVisible(true);
-                        this.insertEdgeButton.setVisible(true);
-                        this.zoomInButton.setVisible(true);
-                        this.zoomOutButton.setVisible(true);
                         this.insertEdgeButton.setEnabled(false);
                         this.removeNodesButton.setEnabled(false);
                         this.removeEdgesButton.setEnabled(false);
                         this.moveButton.setEnabled(false);
+                        Controller.getInstance().update("addNode");
                         break;
                     case 2:
                         this.insertNodeButton.doClick();
@@ -527,6 +530,20 @@ public class MainGUI extends JFrame implements ActionListener{
     }
 
     
+    
+    //mostra i bottoni a seconda della situazione dei nodi
+    protected void showButtons(boolean b){
+        this.saveButton.setVisible(b);
+        this.removeNodesButton.setVisible(b);
+        this.removeEdgesButton.setVisible(b);
+        this.doCliqueButton.setVisible(b);
+        this.moveButton.setVisible(b);
+        this.clearButton.setVisible(b);
+        this.fanPlanarButton.setVisible(b);
+        this.insertEdgeButton.setVisible(b);
+        this.zoomInButton.setVisible(b);
+        this.zoomOutButton.setVisible(b);
+    }
     /*
     //per ottenere l'istanza del mainGUI
     public static MainGUI getInstance(){

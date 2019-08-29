@@ -68,8 +68,12 @@ public class View implements IView{
     @Override
     public void refreshGUI() {
         
+        if(Controller.getInstance().getGraphNodes().isEmpty())
+            mainGUI.showButtons(false);
+        else
+            mainGUI.showButtons(true);
+        
         //sono sicuro che questi qua devono starci sicuramente
-        mainGUI.repaint();
         mainGUI.getGraphPanel().revalidate();
         mainGUI.getGraphPanel().repaint();
     }
@@ -90,7 +94,7 @@ public class View implements IView{
 
     @Override
     public int nodesToGenerate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return mainGUI.numberOfNodesToGenerateAutomatically;
     }
     
 }
