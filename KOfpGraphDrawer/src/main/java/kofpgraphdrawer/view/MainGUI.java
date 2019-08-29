@@ -88,7 +88,8 @@ public class MainGUI extends JFrame implements ActionListener{
     private JToolBar toolBar;
     
     public static String filePath;
-    public int numberOfNodesToGenerateAutomatically;
+    protected int numberOfNodesToGenerateAutomatically;
+    protected int kOfpValue;
    
 
     //private int numberOfClicksForInsertNodeButton =0;
@@ -317,11 +318,11 @@ public class MainGUI extends JFrame implements ActionListener{
                         
                     case 1:
                         this.infoPanel.setTextOfLogArea("'manual insert node' mode enabled");
-                        /*
                         this.graphPanel.setSelectionForNodes(true);
                         this.graphPanel.setRemovable(false,false);
                         this.graphPanel.setSelectionForEdges(false);
-                        */
+                        this.zoomInButton.setEnabled(true);
+                        this.zoomOutButton.setEnabled(true);
                         this.insertEdgeButton.setEnabled(false);
                         this.removeNodesButton.setEnabled(false);
                         this.removeEdgesButton.setEnabled(false);
@@ -360,63 +361,78 @@ public class MainGUI extends JFrame implements ActionListener{
         }
         
         else if(event.getSource() == insertEdgeButton){
-            if(this.insertEdgeButton.isSelected() == true){
-                doCliqueButton.setEnabled(false);
+            if(this.insertEdgeButton.isSelected()){
                 this.infoPanel.setTextOfLogArea("'insert edge' mode enabled");
+                
                 this.graphPanel.setSelectionForEdges(true);
                 this.graphPanel.setSelectionForNodes(false);
                 this.graphPanel.setRemovable(false,false);
+                
                 this.insertNodeButton.setEnabled(false);
+                this.doCliqueButton.setEnabled(false);
                 this.removeNodesButton.setEnabled(false);
                 this.removeEdgesButton.setEnabled(false);
                 this.moveButton.setEnabled(false);
             }else{
-                doCliqueButton.setEnabled(true);
                 this.infoPanel.setTextOfLogArea("'insert edge' mode disabled");
+                
                 this.graphPanel.setSelectionForEdges(false);
+                
                 this.insertNodeButton.setEnabled(true);
                 this.removeNodesButton.setEnabled(true);
                 this.removeEdgesButton.setEnabled(true);
                 this.moveButton.setEnabled(true);
+                this.doCliqueButton.setEnabled(true);
+
             }
            
             
         }
         else if(event.getSource() == zoomInButton){
-            zoomIn();
+            this.zoomIn();
+            
             this.infoPanel.setTextOfLogArea("zoom in! Scale factor: " + SCALE_DRAW[SCALE_INDEX]);
+            
             this.graphPanel.revalidate();
             this.graphPanel.repaint();
 
         }
         else if(event.getSource() == zoomOutButton){
-            zoomOut();
+            this.zoomOut();
+            
             this.infoPanel.setTextOfLogArea("zoom out! Scale factor: " +SCALE_DRAW[SCALE_INDEX]);
+            
             this.graphPanel.revalidate();
             this.graphPanel.repaint();
             
         }
         else if(event.getSource() == doCliqueButton){
             this.infoPanel.setTextOfLogArea("clique!");
-            this.graphPanel.setClique();
+            Controller.getInstance().update("doClique");
+            
+            //this.graphPanel.setClique();
             
         }
         else if(event.getSource() == removeNodesButton){
-            if(this.removeNodesButton.isSelected() == true){
+            if(this.removeNodesButton.isSelected()){
                 this.infoPanel.setTextOfLogArea("'remove node' mode enabled");
+                
                 this.graphPanel.setMovable(false);
+                this.graphPanel.setRemovable(true,false);
+                
                 this.insertEdgeButton.setEnabled(false);
                 this.insertNodeButton.setEnabled(false);
                 this.moveButton.setEnabled(false);
                 this.doCliqueButton.setEnabled(false);   
-                if(this.graphPanel.nodes.isEmpty())
+                
+                /*if(this.graphPanel.nodes.isEmpty())
                     JOptionPane.showMessageDialog(this, "ERROR \n NO NODES TO REMOVE!!!!","Error message", JOptionPane.ERROR_MESSAGE);
-                else
-                    this.graphPanel.setRemovable(true,false);           
+                else*/
             }
             else{
                 this.infoPanel.setTextOfLogArea("'remove node' mode disabled");
                 this.graphPanel.setRemovable(false,false);
+                
                 this.moveButton.setEnabled(true);
                 this.insertEdgeButton.setEnabled(true);
                 this.insertNodeButton.setEnabled(true);
@@ -433,60 +449,64 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.moveButton.setEnabled(false);
                 this.doCliqueButton.setEnabled(false);
             
-                if(this.graphPanel.edges.isEmpty())
+                if(Controller.getInstance().getGraphEdges().isEmpty()){
                     JOptionPane.showMessageDialog(this, "ERROR \n NO EDGES TO REMOVE!!!!","Error message", JOptionPane.ERROR_MESSAGE);
-                else
+                    this.removeEdgesButton.doClick();
+                }else
                     this.graphPanel.setRemovable(false, true);
             }
             else{
                 this.infoPanel.setTextOfLogArea("'remove edges' mode disabled");
                 this.graphPanel.setRemovable(false,false);
+                this.graphPanel.setSelectionForEdges(false);
+                
                 this.moveButton.setEnabled(true);
                 this.insertEdgeButton.setEnabled(true);
                 this.insertNodeButton.setEnabled(true);
                 this.doCliqueButton.setEnabled(true);
-                this.graphPanel.setSelectionForEdges(false);
+                
             }
             
         }
         else if(event.getSource() == moveButton){
-            if(this.moveButton.isSelected() == true && !this.graphPanel.nodes.isEmpty()){
+            if(this.moveButton.isSelected()){
                 this.infoPanel.setTextOfLogArea("free mode enabled");
+                
                 this.graphPanel.setMovable(true);
                 this.graphPanel.setRemovable(false,false);
+                
                 this.removeNodesButton.setEnabled(false);
                 this.removeEdgesButton.setEnabled(false);
             }
-            else if(this.moveButton.isSelected() == false){
+            else{
                 this.infoPanel.setTextOfLogArea("free mode disabled");
+                
                 this.graphPanel.setMovable(false);
+                
                 this.removeNodesButton.setEnabled(true);
                 this.removeEdgesButton.setEnabled(true);
-            }
-            else if(this.graphPanel.nodes.isEmpty()){
-                JOptionPane.showMessageDialog(this, "ERROR \n NO NODES TO MOVE!!!!","Error message", JOptionPane.ERROR_MESSAGE);
             }
         }
         else if(event.getSource() == clearButton){
             if(JOptionPane.showConfirmDialog(this,"Are you sure to clear the workspace?\n","CAUTION", JOptionPane.YES_NO_OPTION)==0){
                 this.infoPanel.clearInfoPanel();
-                this.graphPanel.clearWorkspace();
-                //numberOfClicksForInsertNodeButton = 0;
+                
                 this.graphPanel.setMovable(false);
                 this.graphPanel.setRemovable(false,false);
+                
                 while(SCALE_INDEX != DEFAULT_SCALE_INDEX){
                     if(SCALE_INDEX<DEFAULT_SCALE_INDEX)
                         zoomIn();
                     else
                         zoomOut();
                 }
-                
-                this.graphPanel.repaint();
+                Controller.getInstance().update("clearGraph");
             }
         }
+        
         else if(event.getSource() == fanPlanarButton){
             try{
-                int k = Integer.valueOf(JOptionPane.showInputDialog(this, "Insert k parameter"));
+                kOfpValue = Integer.valueOf(JOptionPane.showInputDialog(this, "Insert k parameter"));
                 boolean ris = this.graphPanel.fanPlanarityOfGraph(k);
                 this.infoPanel.setTextOfLogArea("The graph is " + k + " fan-planar:" + ris);
                 
@@ -521,6 +541,10 @@ public class MainGUI extends JFrame implements ActionListener{
         this.insertEdgeButton.setVisible(b);
         this.zoomInButton.setVisible(b);
         this.zoomOutButton.setVisible(b);
+    }
+    
+    protected int getKOfpValue(){
+        return kOfpValue;
     }
     /*
     //per ottenere l'istanza del mainGUI

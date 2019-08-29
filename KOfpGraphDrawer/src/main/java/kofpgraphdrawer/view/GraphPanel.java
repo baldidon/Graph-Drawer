@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.event.MouseInputListener;
-import kofpcirculardrawings.controller.GraphInstance;
-import kofpcirculardrawings.model.Graph;
 import kofpgraphdrawer.controller.Controller;
 //import kofpcirculardrawings.model.Node;
 
@@ -393,7 +391,8 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                 n.getLogicalNode().setCoordinates(x - this.node.getDrawingWidth()/2,y - this.node.getDrawingWidth()/2);
                 View.getInstance().addNodeToStatusArea(n.getLogicalNode().toString());
                 this.nodes.add(n);
-                graph.addNode(n.getLogicalNode());
+                //graph.addNode(n.getLogicalNode());
+                Controller.getInstance().update("addNode");
             }
         return n;
     }
