@@ -5,12 +5,13 @@ import kofpgraphdrawer.controller.Controller;
 
 public class View implements IView{
     
+    
     private static View view = null;
     private static MainGUI mainGUI = null;
     
     @Override
     public Point nodeToAdd() {
-        return new Point();
+        return this.mainGUI.getGraphPanel().coordinatesMouse;
     }
     
     @Override
@@ -44,11 +45,6 @@ public class View implements IView{
     }
 
     @Override
-    public void isFanPlanar(boolean result) {
-       this.ris = result;
-    }
-
-    @Override
     public void setError(String error) {
         mainGUI.getInfoPanel().setTextOfLogArea(error);
     }
@@ -59,7 +55,7 @@ public class View implements IView{
     }
     
     @Override
-    public int getRadius(){
+    public double getRadius(){
         return mainGUI.getGraphPanel().getCircle().getFrameOfCircle().getWidth()/2;
     }
     

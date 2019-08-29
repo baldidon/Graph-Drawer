@@ -36,20 +36,20 @@ public interface IView {
     //aggiornare il disegno nella GUI ad ogni interazione dell'utentea
     public void refreshGUI();
     
-    public int getKValueForFanPlanarity(); 
-    
-    public void isFanPlanar(boolean result);
+    public int getKValueForFanPlanarity();
     
     public void setError(String error);
     
     public String getPath();
     
     //oltre al raggio, devo ottenere il centro di graphPanel
-    public int getRadius();
+    public double getRadius();
     
     public Point getCenterOfGraphPanel();
     
     public InfoPanel getInfoPanel();
     
     public GraphPanel getGraphPanel();
+    
+    public void openMainGUI();
 }

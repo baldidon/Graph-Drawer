@@ -52,7 +52,7 @@ public class Controller implements IController{
                 break;
             
             case "addEdge":
-                points = View.getInstance.edgeToAdd();
+                points = View.getInstance().edgeToAdd();
                 if(points.length==2){
                     if(!Model.getInstance().addEdge(points[0], points[1])){
                         View.getInstance().setError("Error in add edge");
@@ -66,7 +66,7 @@ public class Controller implements IController{
                 break;
                 
             case "delEdge":
-                points = View.getInstance.edgeToAdd();
+                points = View.getInstance().edgeToAdd();
                 if(points.length==2){
                     if(!Model.getInstance().delEdge(points[0], points[1])){
                         View.getInstance().setError("Error in del edge");
@@ -116,7 +116,7 @@ public class Controller implements IController{
                 break;
                 
             case "clearGraph":
-                result = Model.getInstance.clearGraph();
+                result = Model.getInstance().clearGraph();
             default :
                 View.getInstance().setError("Function not found!");
                 result=false;
