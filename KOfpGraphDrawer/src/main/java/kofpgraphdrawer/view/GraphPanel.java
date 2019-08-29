@@ -95,8 +95,8 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         }
         
         //Disegno i nodi
-        for(point : Controller.getInstance().getGraphNodes()){
-            node = new NodeDrawing(p, this);
+        for(Point point : Controller.getInstance().getGraphNodes()){
+            node = new NodeDrawing(point, this);
             node.draw(g);
         }
     }
@@ -157,10 +157,6 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         return this.circle;
     }
     
-    protected Point getCoordinates(){
-        return point;
-    }
-    
     //
     //MOUSE LISTENER METHODS
     //
@@ -215,7 +211,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                     if(edge.getFrameOfEdge().intersects(rect)){
                         p1 = points[0];
                         p2 = points[1];
-                        Controller.update("delEdge");
+                        Controller.getInstance().update("delEdge");
                     }
                 }
             }
@@ -314,22 +310,21 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     }
 
     private boolean isPossibleToMoveNodes(){
-        if(!this.nodes.isEmpty() && this.moving == true)
+        if(!Controller.getInstance().getGraphNodes().isEmpty() && this.moving == true)
             return true;
         else
             return false;
     }
     
-    private void moveNode(double x, double y){
-        
-            for (NodeDrawing n : this.nodes){
-                if(n.getFrameOfNode().contains(x,y) && this.circle.railsForMovingNodes(n.getNodeX(), n.getNodeY())){
-                    draggedNode = n;
-                }
-            }
-            draggedNode.setRect(x - NodeDrawing.DEFAULT_DIMENSION/2, y - NodeDrawing.DEFAULT_DIMENSION/2);
-            draggedNode.setAngle();
+    protected Point getPoint(){
+        return this.point;
+    }
+    
+    protected Point getP1(){
+        return this.p1;
     }
 
-
+    protected Point getP2(){
+        return this.p2;
+    }
 }

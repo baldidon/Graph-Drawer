@@ -87,6 +87,13 @@ public class CircularDrawing {
           
     }
     
+    protected int getDrawingWidth(){
+        return (int)(this.circle.getX()+this.circle.getWidth());
+    }
+
+    protected int getDrawingHeight(){
+        return (int)(this.circle.getY() + this.circle.getWidth());
+    }
    
 } // end class
 

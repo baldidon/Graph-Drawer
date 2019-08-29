@@ -11,7 +11,7 @@ public class View implements IView{
     
     @Override
     public Point nodeToAdd() {
-        return this.mainGUI.getGraphPanel().getCoordinates();
+        return this.mainGUI.getGraphPanel().getPoint();
     }
     
     @Override
@@ -21,7 +21,7 @@ public class View implements IView{
     
     @Override
     public Point nodeToDel() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return mainGUI.getGraphPanel().getPoint();
     }
 
     @Override
@@ -31,12 +31,18 @@ public class View implements IView{
 
     @Override
     public Point[] edgeToAdd() {
-        return Point[] points = {mainGUI.getGraphPanel().p1, mainGUI.getGraphPanel().p2};
+        Point[] points = new Point[2];
+        points[1] = mainGUI.getGraphPanel().getP1();
+        points[2] = mainGUI.getGraphPanel().getP2();
+        return points;
     }
 
     @Override
     public Point[] edgeToDel() {
-        return Point[] points = {mainGUI.getGraphPanel().p1, mainGUI.getGraphPanel().p2};
+        Point[] points = new Point[2];
+        points[1] = mainGUI.getGraphPanel().getP1();
+        points[2] = mainGUI.getGraphPanel().getP2();
+        return points;
     }
 
     @Override
