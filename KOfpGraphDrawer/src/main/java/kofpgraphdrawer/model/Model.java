@@ -15,7 +15,14 @@ public class Model implements IModel {
             graph = new Graph();
         
         boolean ris = true;
-        String lastID = graph.getNodeList().get(graph.getNodeList().size()-1).getID();
+        String lastID = null;
+        if(graph.getNodeList().isEmpty())
+            lastID = "0";
+        else{
+            int ID =Integer.parseInt(graph.getNodeList().get(graph.getNodeList().size()-1).getID())+1;
+            lastID = Integer.toString(ID);
+        }
+            
         for(Node n : graph.getNodeList()){
             if(n.getCoordinates().equals(point))
                 ris = false;
@@ -197,7 +204,9 @@ public class Model implements IModel {
 
     @Override
     public boolean loadFromFile(String filePath) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       graph.nodeFromFile();
+       graph.edgeFromFile();
+       return true;
     }
 
     @Override

@@ -131,15 +131,11 @@ public class Graph /*implements GraphInterface*/{
             //boolean importingStatus = false;
             this.listOfStringByFile = new LinkedList<>();
             String auxiliaryBuffer = null;
-            BufferedReader importFile;
-            
-                importFile = View.getInstance().getGMLFileHandler().getOpenedFile();
-                
-                while((auxiliaryBuffer=importFile.readLine())!=null){
-                    if(!auxiliaryBuffer.isEmpty())//se la stringa ausiliaria non contiene quei caratteri, allora salva dentro la linkedList!
-                        this.listOfStringByFile.add(auxiliaryBuffer.trim());
-                    //System.out.println(this.listOfStringByFile.getLast());
-                }
+            BufferedReader importFile = View.getInstance().getGMLFileHandler().getOpenedFile();   
+            while((auxiliaryBuffer=importFile.readLine())!=null){
+                if(!auxiliaryBuffer.isEmpty())//se la stringa ausiliaria non contiene quei caratteri, allora salva dentro la linkedList
+                    this.listOfStringByFile.add(auxiliaryBuffer.trim());
+            }
                 
         }
         catch(FileNotFoundException fnfe){
