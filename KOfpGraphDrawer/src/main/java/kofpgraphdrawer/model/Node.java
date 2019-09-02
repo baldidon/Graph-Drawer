@@ -64,8 +64,7 @@ public class Node{
 	}
 
 	public void setCoordinates(double x, double y){
-		this.point.setX(x);
-		this.point.setY(y);
+		this.point.setLocation(x, y);
 		//return this.point;
 	}
 

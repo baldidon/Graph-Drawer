@@ -49,12 +49,9 @@ public class GMLFileHandler extends FileDialog{
            //View.getInstance().addTextToLogArea("error! no graph loaded!");
 
        }
-       catch(NullPointerException npe){
+       catch(NullPointerException | NoSuchFieldError npe){
            mainGUI.getInfoPanel().setTextOfLogArea("error! no graph loaded!");
 
-       }
-       catch(NoSuchFieldError nsfe){
-           mainGUI.getInfoPanel().setTextOfLogArea("error! no graph loaded!");
        }
 
        return importedGraphFile;

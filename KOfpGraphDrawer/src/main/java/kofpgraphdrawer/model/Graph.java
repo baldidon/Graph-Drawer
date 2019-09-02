@@ -2,11 +2,9 @@ package kofpgraphdrawer.model;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.LinkedList;
+import kofpgraphdrawer.view.View;
 
 
 
@@ -22,6 +20,7 @@ public class Graph /*implements GraphInterface*/{
 
 	protected ArrayList<Node> nodeList;
 	protected ArrayList<Edge> edgeList;
+        
         protected ArrayList<Edge> kfpEdgeList;
         
         //uso una linkedList per avere le stringhe del file letto
@@ -41,8 +40,8 @@ public class Graph /*implements GraphInterface*/{
 		//file = new FileManager(fileHandler.getPathFile());
                 
                 
-		nodeList = new ArrayList<Node>(0);
-		edgeList = new ArrayList<Edge>(0);
+		nodeList = new ArrayList<>(0);
+		edgeList = new ArrayList<>(0);
 
                	/*if(file.getStatus()){
 			edges=0;
@@ -134,7 +133,7 @@ public class Graph /*implements GraphInterface*/{
             String auxiliaryBuffer = null;
             BufferedReader importFile;
             
-                importFile = View.getInstance().getFileHandler().getOpenedFile();
+                importFile = View.getInstance().getGMLFileHandler().getOpenedFile();
                 
                 while((auxiliaryBuffer=importFile.readLine())!=null){
                     if(!auxiliaryBuffer.isEmpty())//se la stringa ausiliaria non contiene quei caratteri, allora salva dentro la linkedList!
@@ -144,15 +143,11 @@ public class Graph /*implements GraphInterface*/{
                 
         }
         catch(FileNotFoundException fnfe){
-              
-            fnfe.printStackTrace();
         }
         catch(IOException ioe){
-                
-            ioe.printStackTrace();
         }
         catch(NullPointerException npe){
-            View.getInstance().addTextToLogArea("error during import, file not imported!");
+            View.getInstance().getInfoPanel().setTextOfLogArea("error during import, file not imported!");
         }
            //System.out.println("lettura file avvenuta correttamente");
     }
@@ -241,29 +236,30 @@ public class Graph /*implements GraphInterface*/{
                
 	
         //forse non serve, guarda GMLFileHandler
-        public void saveToFile(){
-                PrintWriter printWriter = null;
-                try{
-                    printWriter= new PrintWriter(
-					new BufferedWriter(
-						new OutputStreamWriter(new FileOutputStream(View.getInstance().getFileHandler().getPathFile()),"UTF-8")),true);
-                    printWriter.print(this.graphToString());
-                    
-                    //status = true;
-                }
-                catch(UnsupportedEncodingException fnfe){
-                    //View.getInstance().addTextToLogArea("Error during saving, graph not saved!");
+        public boolean saveToFile(String filePath){
+            boolean ris = false;
+            PrintWriter printWriter = null;
+            try{
+                printWriter= new PrintWriter(
+                        new BufferedWriter(
+                                new OutputStreamWriter(new FileOutputStream(filePath),"UTF-8")),true);
+                printWriter.print(this.graphToString());
+                ris = true;
 
-                }
-                finally{
-                    try{
-                        printWriter.close();
+            }
+            catch(UnsupportedEncodingException | FileNotFoundException uee){
+                //View.getInstance().addTextToLogArea("Error during saving, graph not saved!");
+                ris = false;
+            }
+            finally{
+                try{
+                    printWriter.close();
                     }catch(NullPointerException npe){
-                        View.getInstance().addTextToLogArea("Error during saving,\n graph not saved!");
+                        View.getInstance().getInfoPanel().setTextOfLogArea("Error during saving,\n graph not saved!");
                     } 
                 }
                 
-		//return status;
+            return ris;
 	}
         
         

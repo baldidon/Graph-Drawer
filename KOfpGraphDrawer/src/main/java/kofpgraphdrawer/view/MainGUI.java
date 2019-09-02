@@ -219,6 +219,10 @@ public class MainGUI extends JFrame implements ActionListener{
         return this.graphPanel;
     }
     
+    protected GMLFileHandler getFileHandler(){
+        return this.fileHandler;
+    }
+    
     /*
     protected GMLFileHandler getFileHandler(){
         return this.fileHandler;

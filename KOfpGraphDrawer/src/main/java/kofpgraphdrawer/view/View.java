@@ -96,6 +96,12 @@ public class View implements IView{
         return mainGUI.getGraphPanel();
     }
     
+    @Override
+    public GMLFileHandler getGMLFileHandler(){
+        return mainGUI.getFileHandler();
+    }
+    
+    @Override
     public void openMainGUI() { 
       javax.swing.SwingUtilities.invokeLater(() -> {
           if (mainGUI == null)

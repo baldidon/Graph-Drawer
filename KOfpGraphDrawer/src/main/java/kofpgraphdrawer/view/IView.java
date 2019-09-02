@@ -51,5 +51,7 @@ public interface IView {
     
     public GraphPanel getGraphPanel();
     
+    public GMLFileHandler getGMLFileHandler();
+    
     public void openMainGUI();
 }

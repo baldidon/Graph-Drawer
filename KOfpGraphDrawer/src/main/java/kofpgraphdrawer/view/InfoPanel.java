@@ -113,7 +113,7 @@ public class InfoPanel extends JPanel{
         this.logArea.setText("new session started");
     }
 
-    protected void setTextOfLogArea(String s){
+    public void setTextOfLogArea(String s){
         
         this.logArea.append("\n" + s);
         /*

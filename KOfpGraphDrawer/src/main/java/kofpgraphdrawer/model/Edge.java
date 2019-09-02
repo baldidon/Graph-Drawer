@@ -1,6 +1,6 @@
 package kofpgraphdrawer.model;
+import java.awt.Point;
 import java.awt.geom.Line2D;
-import java.awt.geom.Line2D.Double; 
         
 public class Edge{
 	private Node n1;
@@ -44,6 +44,10 @@ public class Edge{
 	public Node getNode1(){
 		return this.n1;
 	}
+        
+        public Point getCoordinatesNode1(){
+            return this.n1.getCoordinates();
+        }
 
 	public Node setNode1(Node n){
 		this.n1 = n;
@@ -53,6 +57,10 @@ public class Edge{
 	public Node getNode2(){
 		return this.n2;
 	}
+        
+        public Point getCoordinatesNode2(){
+            return this.n2.getCoordinates();
+        }
 
 	public Node setNode2(Node n){
 		this.n2 = n;
