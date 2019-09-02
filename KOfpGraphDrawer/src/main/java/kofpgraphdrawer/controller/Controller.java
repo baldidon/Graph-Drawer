@@ -2,6 +2,7 @@ package kofpgraphdrawer.controller;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import kofpgraphdrawer.model.Model;
 import kofpgraphdrawer.view.View;
 
 public class Controller implements IController{
@@ -27,7 +28,7 @@ public class Controller implements IController{
             case "addMultipleNodes":
                 int numberOfNodes = View.getInstance().nodesToGenerate();
                 for(int i=0; i<numberOfNodes; i++){
-                    Model.getInstance.addNode(this.generatePoint(i, numberOfNodes));
+                    Model.getInstance().addNode(this.generatePoint(i, numberOfNodes));
                 }
                 break;
                 
