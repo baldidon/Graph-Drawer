@@ -159,10 +159,11 @@ public class Graph /*implements GraphInterface*/{
         */
          
         //funziona
-        public void nodeFromFile(){
+        public boolean nodeFromFile(){
             this.stringFromFile();
             String auxiliaryId;
             String auxiliaryLabel;
+            boolean result=true;
             for(int i=0; i<this.listOfStringByFile.size(); i++){
                 auxiliaryId = null;
                 auxiliaryLabel = null;
@@ -170,7 +171,6 @@ public class Graph /*implements GraphInterface*/{
                     i++;
                     
                     while(!this.listOfStringByFile.get(i).contains("]")){
-                        //System.out.println("trovato qualcosa");
                         if(this.listOfStringByFile.get(i).toLowerCase().contains("id"))
                             auxiliaryId = listOfStringByFile.get(i).substring(3);
                         else if(this.listOfStringByFile.get(i).toLowerCase().contains("label")){
@@ -185,17 +185,21 @@ public class Graph /*implements GraphInterface*/{
                     if(auxiliaryLabel == null)
                         auxiliaryLabel=auxiliaryId;
                     if(auxiliaryId != null)
-                        this.addNodeImported(auxiliaryId, auxiliaryLabel);
+                        result=this.addNodeImported(auxiliaryId, auxiliaryLabel);
                     
                 } 
             }
+            
+            return result;
             
         }
         
                 
         //funziona
-        public void edgeFromFile(){
+        public boolean edgeFromFile(){
             stringFromFile();
+            
+            boolean result=true;
             
             Node auxiliaryNodeA = null;
             Node auxiliaryNodeB = null;
@@ -224,10 +228,11 @@ public class Graph /*implements GraphInterface*/{
                         }
                         i++;
                     }  
-                    this.addEdge(new Edge(auxiliaryNodeA,auxiliaryNodeB));
                     
+                    result=this.addEdge(new Edge(auxiliaryNodeA,auxiliaryNodeB)); 
                 }
-            }     
+            }
+            return result;
         }
                
 	

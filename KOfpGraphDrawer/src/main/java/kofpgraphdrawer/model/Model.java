@@ -14,23 +14,9 @@ public class Model implements IModel {
         if(graph == null)
             graph = new Graph();
         
-        boolean ris = true;
-        String lastID = null;
-        if(graph.getNodeList().isEmpty())
-            lastID = "0";
-        else{
-            int ID =Integer.parseInt(graph.getNodeList().get(graph.getNodeList().size()-1).getID())+1;
-            lastID = Integer.toString(ID);
-        }
-            
-        for(Node n : graph.getNodeList()){
-            if(n.getCoordinates().equals(point))
-                ris = false;
-        }
-        if(ris == true)
-            graph.addNode(new Node(point.x,point.y,lastID,lastID));
-        
-        return ris;
+        String ID = Integer.toString(Node.ID_TO_ASSIGN);
+        Node.ID_TO_ASSIGN++;
+        return graph.addNode(new Node(point.x, point.y, ID, ID));
     }
 
     @Override
@@ -42,8 +28,7 @@ public class Model implements IModel {
         //forse va usato l'iteratore, però prima proviamo così!
         for(Node n : graph.getNodeList()){
             if(n.getCoordinates().equals(point)){
-                ris = true;
-                graph.delNode(n);
+                ris = graph.delNode(n);
                 break;
             }
         }
@@ -105,13 +90,16 @@ public class Model implements IModel {
         boolean foundPoint2 = false;
         int index2 = 0;
         
+        //Controllo se l'arco esiste già
         for(Edge e : graph.getEdgeList()){
-            if(e.getNode1().getCoordinates().equals(point1) && e.getNode2().getCoordinates().equals(point2)){
+            if(e.getNode1().getCoordinates().equals(point1) && e.getNode2().getCoordinates().equals(point2)
+                    || e.getNode1().getCoordinates().equals(point2) && e.getNode2().getCoordinates().equals(point1)){
                 notFoundSameEdge = false;
                 break;
             }
         }
         
+        //Cerco i 2 nodi per creare l'arco (se esistono)
         for(Node n : graph.getNodeList()){
             if(n.getCoordinates().equals(point1)){
                 foundPoint1 = true;
@@ -124,12 +112,12 @@ public class Model implements IModel {
             
         }
         
-        if(notFoundSameEdge == true && foundPoint1 == true && foundPoint2 == true){
-            graph.addEdge(new Edge(graph.getNodeList().get(index1),graph.getNodeList().get(index2)));
-            return true;
-        }
-        else
-            return false;
+        boolean result=false;
+        
+        if(notFoundSameEdge && foundPoint1 && foundPoint2)
+            result = graph.addEdge(new Edge(graph.getNodeList().get(index1),graph.getNodeList().get(index2)));
+        
+        return result;
     }
 
     @Override
@@ -139,9 +127,9 @@ public class Model implements IModel {
         
         boolean ris = false;
         for(Edge e : graph.getEdgeList()){
-            if(e.getNode1().getCoordinates().equals(point1) && e.getNode2().getCoordinates().equals(point2)){
-                ris = true;
-                graph.delEdge(e);
+            if(e.getNode1().getCoordinates().equals(point1) && e.getNode2().getCoordinates().equals(point2)
+                    || e.getNode1().getCoordinates().equals(point2) && e.getNode2().getCoordinates().equals(point1)){
+                ris = graph.delEdge(e);
                 break;
             }
         }
@@ -204,9 +192,11 @@ public class Model implements IModel {
 
     @Override
     public boolean loadFromFile(String filePath) {
-       graph.nodeFromFile();
-       graph.edgeFromFile();
-       return true;
+       boolean result=true;
+       result=graph.nodeFromFile();
+       if(result)
+        result=graph.edgeFromFile();
+       return result;
     }
 
     @Override
@@ -214,6 +204,7 @@ public class Model implements IModel {
         if(graph == null)
             graph = new Graph();
         
+        Node.ID_TO_ASSIGN=0;
         graph.getEdgeList().clear();
         graph.getNodeList().clear();
         

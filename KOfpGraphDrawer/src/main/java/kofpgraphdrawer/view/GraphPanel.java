@@ -165,7 +165,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     public void mouseClicked(MouseEvent e){
         
         if(this.isPossibleAddNode(e.getX(), e.getY())){
-            point = new Point(e.getX(), e.getY());
+            point = new Point(e.getX()-this.getWidth()/2, e.getY()-this.getHeight()/2);
             Controller.getInstance().update("addNode");
         }
         //per cliccare e creare un arco, funge
@@ -195,8 +195,10 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         //oltre a rimuovere il nodo, elimino anche gli archi che iniziavano o finivano in quel nodo; roba orribile lo so
         else if(this.isPossibleToRemoveNodes()){
             for (Point auxPoint : Controller.getInstance().getGraphNodes()){
+                
                 node = new NodeDrawing(auxPoint, this);
-                if (node.getFrameOfNode().contains(e.getX(), e.getY())){
+         
+                if (node.getFrameOfNode().contains(e.getX() - this.getWidth()/2, e.getY() - this.getHeight()/2)){
                     point = auxPoint;
                     Controller.getInstance().update("delNode");
                 }
@@ -234,20 +236,36 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     @Override
     //DA FARE BENE LUNEDI
     public void mouseDragged(MouseEvent e){
+        boolean found = false;
         if(this.isPossibleToMoveNodes()){
-            NodeDrawing draggedNode;
+            double x=0;
+            double y=0;
             for(Point auxPoint : Controller.getInstance().getGraphNodes()){
                 node = new NodeDrawing(auxPoint, this);
-                if(node.getFrameOfNode().contains(e.getX(), e.getY())){
+                
+                //posizione del mouse relative e scalate
+                x = (e.getX() - this.getWidth()/2)/MainGUI.scaleFactor;
+                y = (e.getY() - this.getHeight()/2)/MainGUI.scaleFactor;
+                
+                if(node.getFrameOfNode().contains(x, y)){
+                   found = true;
                    p1 = auxPoint;
-                   draggedNode = new NodeDrawing(new Point(e.getX(), e.getY()), this);
+                   draggedNode = new NodeDrawing(new Point((int)x, (int)y), this);
+                   break;
                 }
             }
-            double angle = Math.atan2(e.geY(), e.getX())
-            draggedNode.setRect(x - NodeDrawing.DEFAULT_DIMENSION/2, y - NodeDrawing.DEFAULT_DIMENSION/2);
-            View.getInstance().refreshGUI();
+            if(found){
+                draggedNode.getFrameOfNode().setRect(x - NodeDrawing.DEFAULT_DIMENSION/2, 
+                    y - NodeDrawing.DEFAULT_DIMENSION/2, NodeDrawing.DEFAULT_DIMENSION, NodeDrawing.DEFAULT_DIMENSION);
+                double angle = Math.atan2(draggedNode.getNodeY(), draggedNode.getNodeX());
+                p2 = new Point((int) (View.getInstance().getRadius() * Math.cos(angle)), 
+                        (int)(View.getInstance().getRadius() * Math.sin(angle)));
+                System.out.println("Point1: (" + p1.getX() + ", " + p1.getY() + ")");
+                System.out.println("Point2: (" + p2.getX() + ", " + p2.getY() + ")");
+                Controller.getInstance().update("setNode");
+                View.getInstance().refreshGUI();
+            }
         }
-        p2 = new Point(draggedNode.getNodeX(), draggedNode.getNodeY());
     }
     
     @Override

@@ -94,7 +94,7 @@ public class MainGUI extends JFrame implements ActionListener{
 
     //private int numberOfClicksForInsertNodeButton =0;
     private int SCALE_INDEX ;
-    public static double scaleFactor =0;
+    public static double scaleFactor =SCALE_DRAW[DEFAULT_SCALE_INDEX];
 
     
     protected static MainGUI mainGui = null;

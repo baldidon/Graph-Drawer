@@ -1,3 +1,5 @@
+//http://docs.yworks.com/yfiles/doc/developers-guide/gml.html
+
 package kofpgraphdrawer.controller;
 
 import java.awt.Point;
@@ -163,8 +165,8 @@ public class Controller implements IController{
     private Point generatePoint(int index, int length){
         
         double t = 2 * Math.PI * index / length;
-        int x = (int) Math.round(View.getInstance().getCenterOfGraphPanel().getX() + (View.getInstance().getRadius())* Math.cos(t));
-        int y = (int) Math.round(View.getInstance().getCenterOfGraphPanel().getY() + (View.getInstance().getRadius())* Math.sin(t));
+        int x = (int) Math.round(View.getInstance().getRadius()* Math.cos(t));
+        int y = (int) Math.round(View.getInstance().getRadius()* Math.sin(t));
             
         return new Point(x, y);
     }

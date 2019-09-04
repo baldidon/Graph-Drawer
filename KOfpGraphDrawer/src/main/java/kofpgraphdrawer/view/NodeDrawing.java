@@ -36,8 +36,8 @@ public class NodeDrawing /*extends AbstractDrawing*/{
     //costruttore, dove gli passo le coordinate del centro del nodo relative rispetto al centro del pannello
     protected NodeDrawing(Point p, GraphPanel graphPanel){
         this.graphPanel = graphPanel;
-        this.x = p.getX() + this.graphPanel.getWidth()/2;
-        this.y = p.getY() + this.graphPanel.getHeight()/2;
+        this.x = p.getX();
+        this.y = p.getY();
         
         this.node = new Rectangle2D.Double(this.x - NodeDrawing.DEFAULT_DIMENSION/2, this.y - NodeDrawing.DEFAULT_DIMENSION/2, NodeDrawing.DEFAULT_DIMENSION, NodeDrawing.DEFAULT_DIMENSION);
         
@@ -49,7 +49,8 @@ public class NodeDrawing /*extends AbstractDrawing*/{
     protected void draw(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
         
-        //this.setDrawing();
+        this.setRect(this.graphPanel.getWidth()/2 + this.getNodeX()*MainGUI.scaleFactor - DEFAULT_DIMENSION/2, 
+                this.graphPanel.getHeight()/2 + this.getNodeY()*MainGUI.scaleFactor - DEFAULT_DIMENSION/2);
         
         g2d.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING,
@@ -91,13 +92,13 @@ public class NodeDrawing /*extends AbstractDrawing*/{
         
     }
     
-    /*@Override
-    protected void rescaleDrawing(){
+    /*protected void rescaleDrawing(){
+        
         double w = this.graphPanel.getCircle().getFrameOfCircle().getCenterX();
         double h = this.graphPanel.getCircle().getFrameOfCircle().getCenterY();
-        double rateFactor=this.scaleFactor/this.previousScaleFactor;
-        double x = ((this.node.getX() + NodeDrawing.DEFAULT_DIMENSION/2)-w)*rateFactor+w;
-        double y = ((this.node.getY() + NodeDrawing.DEFAULT_DIMENSION/2)-h)*rateFactor+h;
+        
+        double x = (this.getNodeX() + w)*MainGUI.scaleFactor;
+        double y = (this.getNodeY() + h)*MainGUI.scaleFactor;
         this.setRect(x-NodeDrawing.DEFAULT_DIMENSION/2, y-NodeDrawing.DEFAULT_DIMENSION/2);
     }*/
     

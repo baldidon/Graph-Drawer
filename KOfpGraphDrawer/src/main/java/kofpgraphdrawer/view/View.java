@@ -26,7 +26,8 @@ public class View implements IView{
 
     @Override
     public Point[] nodeToMove() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+       Point[] points = {mainGUI.getGraphPanel().getP1(), mainGUI.getGraphPanel().getP2()};
+       return points;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class View implements IView{
     
     @Override
     public double getRadius(){
-        return mainGUI.getGraphPanel().getCircle().getFrameOfCircle().getWidth()/2;
+        return mainGUI.getGraphPanel().getCircle().getFrameOfCircle().getWidth()/2/MainGUI.scaleFactor;
     }
     
     @Override

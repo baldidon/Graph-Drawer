@@ -5,6 +5,7 @@ import java.awt.Point;
 
 /*import kofpcirculardrawings.model.Point;*/
 public class Node{
+        public static int ID_TO_ASSIGN=0;
     
 	private Point point;
         private String id;
