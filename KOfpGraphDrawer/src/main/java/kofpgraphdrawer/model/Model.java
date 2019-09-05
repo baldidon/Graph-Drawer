@@ -204,22 +204,37 @@ public class Model implements IModel {
 
     @Override
     public boolean clearGraph(){
+        if(this.graph == null)
+            this.graph = new Graph();
+        
+        Node.ID_TO_ASSIGN=0;
+        this.graph.getEdgeList().clear();
+        this.graph.getNodeList().clear();
+        
+        return this.graph.getEdgeList().isEmpty() && this.graph.getNodeList().isEmpty();
+    }
+    
+    
+    @Override
+    public ArrayList<Point[]> getKFPEdges() {
         if(graph == null)
             graph = new Graph();
         
-        Node.ID_TO_ASSIGN=0;
-        graph.getEdgeList().clear();
-        graph.getNodeList().clear();
+        ArrayList<Point[]> coordsOfEdges = new ArrayList<>();
+        for(Edge e : graph.getKfpEdgeList()){
+            Point[] points = new Point[2];
+            points[0] = e.getCoordinatesNode1();
+            points[1] = e.getCoordinatesNode2();
+            coordsOfEdges.add(points);
+        }
         
-        return graph.getEdgeList().isEmpty() && graph.getNodeList().isEmpty();
+        return coordsOfEdges;
     }
-    
     public static IModel getInstance(){
         if(model == null)
             return model = new Model();
         else 
             return model;
     }
-    
     
 }

@@ -94,7 +94,6 @@ public class Controller implements IController{
                 result = Model.getInstance().isFanPlanar(View.getInstance().getKValueForFanPlanarity());
                 if(!result)
                     colourCriticalEdges=true;
-                //View.getInstance().isFanPlanar(risKFP);
                 break;
                 
             case "saveToFile":
@@ -160,6 +159,11 @@ public class Controller implements IController{
     @Override
     public ArrayList<String> getEdgesLabels() {
         return Model.getInstance().getEdgeLabels();
+    }
+    
+    @Override
+    public ArrayList<Point[]> getKFPGraphEdges() {
+        return Model.getInstance().getKFPEdges();
     }
     
     private Point generatePoint(int index, int length){

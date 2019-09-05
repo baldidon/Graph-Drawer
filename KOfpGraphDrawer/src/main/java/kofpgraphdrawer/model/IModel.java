@@ -28,6 +28,8 @@ public interface IModel {
     
     public ArrayList<String> getEdgeLabels();
     
+    public ArrayList<Point[]> getKFPEdges();
+    
     public boolean doClique();
     
     public boolean isFanPlanar(int k);

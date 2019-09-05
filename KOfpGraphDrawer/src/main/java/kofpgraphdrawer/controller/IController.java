@@ -22,4 +22,6 @@ public interface IController {
     public boolean getColourCritalEdges();
     
     public void setColourCriticalEdges(boolean b);
+    
+    public ArrayList<Point[]> getKFPGraphEdges();
 }

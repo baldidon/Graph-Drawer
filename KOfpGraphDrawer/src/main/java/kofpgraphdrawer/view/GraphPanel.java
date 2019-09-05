@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -34,6 +35,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     protected EdgeDrawing edge;
     
     protected boolean moving;
+    private boolean foundNodeToDrag = false;
     protected boolean removingNodesAndEdges;
     protected boolean removingOnlyEdges;
     
@@ -88,21 +90,30 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         
         //Colora gli archi critici
         if(Controller.getInstance().getColourCritalEdges()){
-            for(Point[] points : Controller.getInstance().getGraphEdges()){
+            for(Point[] points : Controller.getInstance().getKFPGraphEdges()){
                 if(points.length==2){
                     edge = new EdgeDrawing(points[0], points[1], this);
                     edge.isSelected(true);
                     edge.draw(g);
                 }
             }
-            
         }
+        Controller.getInstance().setColourCriticalEdges(false);
         
         //Disegno i nodi
-        for(Point point : Controller.getInstance().getGraphNodes()){
+        for(int index=0; index<Controller.getInstance().getGraphNodes().size(); index++){
+            point = Controller.getInstance().getGraphNodes().get(index);
             node = new NodeDrawing(point, this);
             node.draw(g);
+            g.setColor(Color.WHITE);
+            String label = Controller.getInstance().getNodesLabels().get(index);
+
+            g.drawString(label,(int)(point.getX()*MainGUI.scaleFactor)-3+this.X_CENTER,
+                    (int)(point.getY()*MainGUI.scaleFactor)+3+this.Y_CENTER);
         }
+        
+        //Stampo sui nodi le etichette
+        
     }
         
     /*
@@ -188,6 +199,11 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                     if (p1 == null && p2 == null){
                         p1 = auxPoint;
                         int index = Controller.getInstance().getGraphNodes().indexOf(auxPoint);
+                        
+                        //Coloro il nodo
+                        node.isSelected(true);
+                        node.draw(this.getGraphics());
+
                         View.getInstance().getInfoPanel().setTextOfLogArea("Node " + Controller.getInstance().getNodesLabels().get(index) +" selected!");
                     }
                     
@@ -222,18 +238,15 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
       
         else if(this.isPossibleToRemoveEdges()){
             Rectangle2D.Double rect = new Rectangle2D.Double(x-3, y-3, 6, 6);
-            System.out.println("(" + x + ", " + y + ")");
             for (Point[] points : Controller.getInstance().getGraphEdges()){
                 if(points.length==2){
                     Line2D.Double arc = new Line2D.Double(points[0], points[1]);
                     if(arc.intersects(rect)){
-                        System.out.println("CANCELLO");
                         p1 = points[0];
                         p2 = points[1];
                         Controller.getInstance().update("delEdge");
                     }
                 }
-                System.out.println("\n--------\n");
             }
         }
     }
@@ -248,37 +261,39 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     @Override
     public void mouseEntered(MouseEvent e){}
     @Override 
-    public void mouseReleased(MouseEvent e){}
+    public void mouseReleased(MouseEvent e){
+        this.foundNodeToDrag=false;
+    }
     
     //PER IL MOVE
     @Override
     //DA FARE BENE LUNEDI
     public void mouseDragged(MouseEvent e){
-        boolean found = false;
+        //boolean foundNodeToDrag = false;
         
         //posizione del mouse relative e scalate
         double x=(e.getX() - X_CENTER)/MainGUI.scaleFactor;
         double y=(e.getY() - Y_CENTER)/MainGUI.scaleFactor;
         
         if(this.isPossibleToMoveNodes()){
-            for(Point auxPoint : Controller.getInstance().getGraphNodes()){
-                node = new NodeDrawing(auxPoint, this);
-                                                
-                if(node.getFrameOfNode().contains(x, y)){
-                   found = true;
-                   p1 = auxPoint;
-                   draggedNode = new NodeDrawing(new Point((int)x, (int)y), this);
-                   break;
+            if(!foundNodeToDrag){
+                for(Point auxPoint : Controller.getInstance().getGraphNodes()){
+                    node = new NodeDrawing(auxPoint, this);                            
+                    if(node.getFrameOfNode().contains(x, y)){
+                        foundNodeToDrag = true;
+                        p1 = auxPoint;
+                        //draggedNode = new NodeDrawing(new Point((int)x, (int)y), this);
+                        draggedNode = new NodeDrawing(p1, this);
+                        break;
+                    }
                 }
             }
-            if(found){
+            else{
                 draggedNode.getFrameOfNode().setRect(x - NodeDrawing.DEFAULT_DIMENSION/2, 
                     y - NodeDrawing.DEFAULT_DIMENSION/2, NodeDrawing.DEFAULT_DIMENSION, NodeDrawing.DEFAULT_DIMENSION);
                 double angle = Math.atan2(draggedNode.getNodeY(), draggedNode.getNodeX());
                 p2 = new Point((int) (View.getInstance().getRadius() * Math.cos(angle)), 
                         (int)(View.getInstance().getRadius() * Math.sin(angle)));
-                System.out.println("Point1: (" + p1.getX() + ", " + p1.getY() + ")");
-                System.out.println("Point2: (" + p2.getX() + ", " + p2.getY() + ")");
                 Controller.getInstance().update("setNode");
                 View.getInstance().refreshGUI();
             }
@@ -365,4 +380,5 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     protected Point getP2(){
         return this.p2;
     }
+
 }

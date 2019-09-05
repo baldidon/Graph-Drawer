@@ -11,8 +11,7 @@ import java.io.File;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.ImageIcon;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -122,7 +121,7 @@ public class MainGUI extends JFrame implements ActionListener{
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         
         try {
-            this.setIconImage(ImageIO.read(new File("."+File.separator+"icon.png")));
+            this.setIconImage(ImageIO.read(new File(this.getPathImage("icon.png"))));
         } catch (IOException ioe){
             System.out.println("Errore logo Finestra");
         }
@@ -149,62 +148,62 @@ public class MainGUI extends JFrame implements ActionListener{
         this.toolBar = new JToolBar("options for circular drawings");
         this.toolBar.setFloatable(false);
         
-        this.saveButton = new JButton(SAVE_FILE);
+        this.saveButton = new JButton(new ImageIcon(this.getPathImage("save.png"))); 
         this.saveButton.addActionListener(this);  
         this.toolBar.add(saveButton);
         this.saveButton.setVisible(false);
         
-        this.loadButton = new JButton(LOAD_FILE);
+        this.loadButton = new JButton(new ImageIcon(this.getPathImage("load.png")));
         this.loadButton.addActionListener(this);
         this.toolBar.add(loadButton);
         
         //deve diventare un jtoggle
-        this.insertNodeButton = new JToggleButton(INSERT_NODE,false);
+        this.insertNodeButton = new JToggleButton(new ImageIcon(this.getPathImage("addNode.png")),false);
         this.insertNodeButton.addActionListener(this);
         this.toolBar.add(insertNodeButton);
         
-        this.insertEdgeButton = new JToggleButton(INSERT_EDGE,false);
+        this.insertEdgeButton = new JToggleButton(new ImageIcon(this.getPathImage("addEdge.png")),false);
         this.insertEdgeButton.addActionListener(this);
         this.toolBar.add(insertEdgeButton);
         this.insertEdgeButton.setVisible(false);
         
-        this.zoomInButton = new JButton(ZOOM_IN);
+        this.zoomInButton = new JButton(new ImageIcon(this.getPathImage("zoomIn.png")));
         this.zoomInButton.addActionListener(this);
         this.toolBar.add(zoomInButton);
         this.zoomInButton.setVisible(false);
         
-        this.zoomOutButton = new JButton(ZOOM_OUT);
+        this.zoomOutButton = new JButton(new ImageIcon(this.getPathImage("zoomOut.png")));
         this.zoomOutButton.addActionListener(this);
         this.toolBar.add(zoomOutButton);
         this.zoomOutButton.setVisible(false);
      
 
-        this.doCliqueButton = new JButton(DO_CLIQUE);
+        this.doCliqueButton = new JButton(new ImageIcon(this.getPathImage("doClique.png")));
         this.doCliqueButton.addActionListener(this);
         this.toolBar.add(doCliqueButton);
         this.doCliqueButton.setVisible(false);
         
-        this.removeNodesButton = new JToggleButton(REMOVE_NODES,false);
+        this.removeNodesButton = new JToggleButton(new ImageIcon(this.getPathImage("delNode.png")),false);
         this.removeNodesButton.addActionListener(this);
         this.toolBar.add(removeNodesButton);
         this.removeNodesButton.setVisible(false);
         
-        this.removeEdgesButton = new JToggleButton(REMOVE_EDGES,false);
+        this.removeEdgesButton = new JToggleButton(new ImageIcon(this.getPathImage("delEdge.png")),false);
         this.removeEdgesButton.addActionListener(this);
         this.toolBar.add(removeEdgesButton);
         this.removeEdgesButton.setVisible(false);
         
-        this.moveButton = new JToggleButton(MOVE,false);
+        this.moveButton = new JToggleButton(new ImageIcon(this.getPathImage("move.png")),false);
         this.moveButton.addActionListener(this);
         this.toolBar.add(moveButton);
         this.moveButton.setVisible(false);
         
-        this.clearButton = new JButton(CLEAR);
+        this.clearButton = new JButton(new ImageIcon(this.getPathImage("clear.png")));
         this.clearButton.addActionListener(this);
         this.toolBar.add(clearButton);
         this.clearButton.setVisible(false);
         
-        this.fanPlanarButton = new JButton(FAN_PLANAR);
+        this.fanPlanarButton = new JButton(new ImageIcon(this.getPathImage("KFP.png")));
         this.fanPlanarButton.addActionListener(this);
         this.toolBar.add(fanPlanarButton);
         this.fanPlanarButton.setVisible(false);
@@ -515,16 +514,6 @@ public class MainGUI extends JFrame implements ActionListener{
                 boolean ris = Controller.getInstance().update("isFanPlanar");
                 this.infoPanel.setTextOfLogArea("The graph is " + kOfpValue + " fan-planar:" + ris);
                 
-                
-                //dopo 5 secondi, mi decolora gli archi selezionati che non mi danno la fan-planarità
-                Timer timer = new Timer();
-                TimerTask task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        Controller.getInstance().setColourCriticalEdges(false);
-                    }
-                };
-                timer.schedule(task, 5000);
             }
             catch(NumberFormatException nfe){
                 this.infoPanel.setTextOfLogArea("error in runtime \nFor k parameter, insert a number\n");
@@ -551,6 +540,11 @@ public class MainGUI extends JFrame implements ActionListener{
     
     protected int getKOfpValue(){
         return kOfpValue;
+    }
+    
+    private String getPathImage(String s){
+        return "." + File.separator + "src" + File.separator + "main" + File.separator + 
+                    "java" + File.separator + "utils" + File.separator + s;
     }
     
     protected static double getScaleFactor() {
