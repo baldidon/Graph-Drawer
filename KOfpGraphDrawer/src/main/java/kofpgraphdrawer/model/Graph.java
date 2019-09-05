@@ -410,12 +410,18 @@ public class Graph /*implements GraphInterface*/{
     	String result = "graph\r\n[\r\n";
     	for (int i=0; i<nodeList.size(); i++){
     		Node tempNode = nodeList.get(i);
-    		result+="\tnode\r\n\t[\r\n" + "\t\tid " + tempNode.getID() + "\r\n\t\tlabel " + "\"" + tempNode.getLabel() + "\"\r\n\t]\r\n";
+    		result+="\tnode\r\n\t[\r\n" + "\t\tid " + tempNode.getID() + "\r\n\t\tlabel " + "\"" + tempNode.getLabel() + "\"\r\n"
+                        +"\t\tgraphics\r\n\t\t[\r\n" + "\t\t\tx "+ tempNode.getCoordinates().x + "\r\n\t\t\ty " +tempNode.getCoordinates().y +"\r\n\t\t]\r\n\t]\r\n";
+ 
     	}
 
     	for (int i=0; i<edgeList.size(); i++){
     		Edge tempEdge = edgeList.get(i);
-    		result+="\tedge\r\n\t[\r\n" + "\t\tsource " + tempEdge.getNode1().getID() + "\r\n\t\ttarget " + tempEdge.getNode2().getID() + "\r\n\t\tlabel " + "\"" + tempEdge.getLabel() + "\"\r\n\t]\r\n";
+    		result+="\tedge\r\n\t[\r\n" + "\t\tsource " + tempEdge.getNode1().getID() + "\r\n\t\ttarget " + tempEdge.getNode2().getID() + "\r\n\t\t"
+                        + "graphics\r\n\t\t[\r\n\t\t\tline\r\n\t\t\t[\r\n\t\t\t\tpoint\r\n\t\t\t\t[\r\n\t\t\t\t\tx "+tempEdge.getNode1().getCoordinates().x +"\r\n\t\t\t\t\ty "+tempEdge.getNode2().getCoordinates().y
+                        +"\r\n\t\t\t\t]\r\n\t\t\t\tpoint\r\n\t\t\t\t[\r\n\t\t\t\t\tx "+tempEdge.getNode2().getCoordinates().x+"\r\n\t\t\t\t\ty "+tempEdge.getNode2().getCoordinates().y
+                        +"\r\n\t\t\t\t]\r\n\t\t\t]\r\n\t\t]\r\n"
+                        + "\t\tlabel " + "\"" + tempEdge.getLabel() + "\"\r\n\t]\r\n";
     	}
     	result += "]";
     	return result;
