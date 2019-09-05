@@ -25,6 +25,9 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     protected int width;
     protected int height;
     
+    protected int X_CENTER = width/2;
+    protected int Y_CENTER = height/2;
+    
     protected CircularDrawing circle;
     protected NodeDrawing node;
     protected EdgeDrawing edge;
@@ -165,7 +168,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     public void mouseClicked(MouseEvent e){
         
         if(this.isPossibleAddNode(e.getX(), e.getY())){
-            point = new Point(e.getX()-this.getWidth()/2, e.getY()-this.getHeight()/2);
+            point = new Point(e.getX()-X_CENTER, e.getY()-Y_CENTER);
             Controller.getInstance().update("addNode");
         }
         //per cliccare e creare un arco, funge
@@ -198,7 +201,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                 
                 node = new NodeDrawing(auxPoint, this);
          
-                if (node.getFrameOfNode().contains(e.getX() - this.getWidth()/2, e.getY() - this.getHeight()/2)){
+                if (node.getFrameOfNode().contains(e.getX() - X_CENTER, e.getY() - Y_CENTER)){
                     point = auxPoint;
                     Controller.getInstance().update("delNode");
                 }
@@ -244,8 +247,8 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                 node = new NodeDrawing(auxPoint, this);
                 
                 //posizione del mouse relative e scalate
-                x = (e.getX() - this.getWidth()/2)/MainGUI.scaleFactor;
-                y = (e.getY() - this.getHeight()/2)/MainGUI.scaleFactor;
+                x = (e.getX() - X_CENTER)/MainGUI.scaleFactor;
+                y = (e.getY() - Y_CENTER)/MainGUI.scaleFactor;
                 
                 if(node.getFrameOfNode().contains(x, y)){
                    found = true;
@@ -295,6 +298,9 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         this.width = (int)newSize.getWidth();
         this.height = (int)newSize.getHeight();
         
+        this.X_CENTER = width/2;
+        this.Y_CENTER = height/2;
+        
         View.getInstance().refreshGUI();
     }
     
@@ -313,7 +319,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
 
     
     private boolean isPossibleToRemoveNodes(){
-        if(this.removingNodesAndEdges == true && this.removingOnlyEdges == false)
+        if(this.removingNodesAndEdges == true && this.removingOnlyEdges == false && !Controller.getInstance().getGraphNodes().isEmpty())
             return true;
         else
             return false;

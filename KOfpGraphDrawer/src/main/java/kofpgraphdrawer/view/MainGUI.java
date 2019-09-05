@@ -428,7 +428,6 @@ public class MainGUI extends JFrame implements ActionListener{
                 this.insertNodeButton.setEnabled(true);
                 this.doCliqueButton.setEnabled(true);
             }
-            
         }
         else if(event.getSource() == removeEdgesButton){
             if(this.removeEdgesButton.isSelected() == true){    

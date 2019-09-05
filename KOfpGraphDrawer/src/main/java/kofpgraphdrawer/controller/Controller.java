@@ -1,5 +1,3 @@
-//http://docs.yworks.com/yfiles/doc/developers-guide/gml.html
-
 package kofpgraphdrawer.controller;
 
 import java.awt.Point;
