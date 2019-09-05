@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.JOptionPane;
@@ -167,24 +168,35 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     @Override
     public void mouseClicked(MouseEvent e){
         
+        //posizioni del mouse relative e scalate
+        double x=(e.getX() - X_CENTER)/MainGUI.scaleFactor;;
+        double y=(e.getY() - Y_CENTER)/MainGUI.scaleFactor;
+        
         if(this.isPossibleAddNode(e.getX(), e.getY())){
-            point = new Point(e.getX()-X_CENTER, e.getY()-Y_CENTER);
+            point = new Point((int)x, (int)y);
             Controller.getInstance().update("addNode");
         }
-        //per cliccare e creare un arco, funge
+        
+        //per cliccare e creare un arco
         else if(this.selectingNodesForCreateEdges == true){ 
             
             for (Point auxPoint : Controller.getInstance().getGraphNodes()){
                 node = new NodeDrawing(auxPoint, this);
-                if (node.getFrameOfNode().contains(e.getX(), e.getY()) && p1 == null){
-                    p1 = auxPoint;
-                    int index = Controller.getInstance().getGraphNodes().indexOf(auxPoint);
-                    View.getInstance().getInfoPanel().setTextOfLogArea("Node " + Controller.getInstance().getNodesLabels().get(index) +" selected!");
-                }
-                else if(node.getFrameOfNode().contains(e.getX(), e.getY()) && p1!=null && auxPoint != p1){
-                    p2=auxPoint;
-                    int index = Controller.getInstance().getGraphNodes().indexOf(auxPoint);
-                    View.getInstance().getInfoPanel().setTextOfLogArea("Node " + Controller.getInstance().getNodesLabels().get(index) +" selected!");
+                
+                if(node.getFrameOfNode().contains(x, y)){
+                    //Seleziono il primo punto
+                    if (p1 == null && p2 == null){
+                        p1 = auxPoint;
+                        int index = Controller.getInstance().getGraphNodes().indexOf(auxPoint);
+                        View.getInstance().getInfoPanel().setTextOfLogArea("Node " + Controller.getInstance().getNodesLabels().get(index) +" selected!");
+                    }
+                    
+                    //Seleziono il secondo punto
+                    else if(p1!=null && auxPoint != p1 && p2 == null){
+                        p2=auxPoint;
+                        int index = Controller.getInstance().getGraphNodes().indexOf(auxPoint);
+                        View.getInstance().getInfoPanel().setTextOfLogArea("Node " + Controller.getInstance().getNodesLabels().get(index) +" selected!");
+                    }
                 }
             }
             
@@ -201,7 +213,7 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
                 
                 node = new NodeDrawing(auxPoint, this);
          
-                if (node.getFrameOfNode().contains(e.getX() - X_CENTER, e.getY() - Y_CENTER)){
+                if (node.getFrameOfNode().contains((int)x, (int)y)){
                     point = auxPoint;
                     Controller.getInstance().update("delNode");
                 }
@@ -209,16 +221,19 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
         }
       
         else if(this.isPossibleToRemoveEdges()){
-            Rectangle2D.Double rect = new Rectangle2D.Double(e.getX()-2, e.getY()-2, 4, 4);
+            Rectangle2D.Double rect = new Rectangle2D.Double(x-3, y-3, 6, 6);
+            System.out.println("(" + x + ", " + y + ")");
             for (Point[] points : Controller.getInstance().getGraphEdges()){
                 if(points.length==2){
-                    edge = new EdgeDrawing(points[0], points[1], this);
-                    if(edge.getFrameOfEdge().intersects(rect)){
+                    Line2D.Double arc = new Line2D.Double(points[0], points[1]);
+                    if(arc.intersects(rect)){
+                        System.out.println("CANCELLO");
                         p1 = points[0];
                         p2 = points[1];
                         Controller.getInstance().update("delEdge");
                     }
                 }
+                System.out.println("\n--------\n");
             }
         }
     }
@@ -240,16 +255,15 @@ public class GraphPanel extends JPanel implements MouseInputListener, ComponentL
     //DA FARE BENE LUNEDI
     public void mouseDragged(MouseEvent e){
         boolean found = false;
+        
+        //posizione del mouse relative e scalate
+        double x=(e.getX() - X_CENTER)/MainGUI.scaleFactor;
+        double y=(e.getY() - Y_CENTER)/MainGUI.scaleFactor;
+        
         if(this.isPossibleToMoveNodes()){
-            double x=0;
-            double y=0;
             for(Point auxPoint : Controller.getInstance().getGraphNodes()){
                 node = new NodeDrawing(auxPoint, this);
-                
-                //posizione del mouse relative e scalate
-                x = (e.getX() - X_CENTER)/MainGUI.scaleFactor;
-                y = (e.getY() - Y_CENTER)/MainGUI.scaleFactor;
-                
+                                                
                 if(node.getFrameOfNode().contains(x, y)){
                    found = true;
                    p1 = auxPoint;

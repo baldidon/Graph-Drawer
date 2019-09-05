@@ -18,7 +18,6 @@ public class InfoPanel extends JPanel{
 
     /*QUESTA PORZIONE ANDRà A POPOLARE L'INFOPANEL*/
     private final JTextArea logArea;
-    private final JTextArea statusArea;
     private final JLabel logLabel;
     private final JLabel statusLabel;
     private JPanel logPanel;
@@ -44,22 +43,14 @@ public class InfoPanel extends JPanel{
         this.statusLabel = new JLabel("STATUS");
         this.logLabel = new JLabel("LOG");
         this.font= new Font("verdana",Font.PLAIN,14);
-        
-        
 
         this.logArea = new JTextArea();
         this.logArea.setFont(font);
         this.logArea.setText("new session started");
-        this.statusArea = new JTextArea();
-        this.statusArea.setFont(font);
-        
         
         this.logArea.setRows(30);
         this.logArea.setColumns(20);
-        
-        this.statusArea.setRows(30);
-        this.statusArea.setColumns(20);
-        
+  
         this.setLogPanel();
         this.setStatusPanel();
     }  
@@ -76,13 +67,6 @@ public class InfoPanel extends JPanel{
     }
 
     private void setStatusPanel(){
-        /*
-        this.statusPanel = new JPanel(new BorderLayout());
-        this.scrollStatusArea = new JScrollPane(statusArea);
-        this.statusPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0,0));
-        this.statusPanel.add(statusLabel,BorderLayout.NORTH);
-        this.statusPanel.add(scrollStatusArea,BorderLayout.CENTER);
-        this.add(statusPanel);*/
         
         //Creo e aggiungo al root
         this.nodeList = new DefaultMutableTreeNode("Nodes");
@@ -92,7 +76,7 @@ public class InfoPanel extends JPanel{
          
         //Creo l'albero con le due cartelle, il setVisible nasconde la cartella root ("Graph")
         this.tree = new JTree(this.root);
-        this.tree.setRootVisible(false);
+        this.tree.setRootVisible(true);
         
         //Creo scrollpane 
         this.scrollStatusArea = new JScrollPane(tree);
@@ -103,7 +87,6 @@ public class InfoPanel extends JPanel{
     }
     
     protected void clearStatusArea(){
-        //this.statusArea.setText(null);
         this.nodeList.removeAllChildren();
         this.edgeList.removeAllChildren();
         this.tree.updateUI();
@@ -129,7 +112,6 @@ public class InfoPanel extends JPanel{
     
     protected void addEdgeToStatusArea(String edgeString){
         this.edgeList.add(new DefaultMutableTreeNode(edgeString));
-        this.tree.expandRow(1);
         
         //Aggiungo anche l'arco anche sotto ogni nodo
         String idNode;
@@ -143,10 +125,6 @@ public class InfoPanel extends JPanel{
                 tempNode.add(new DefaultMutableTreeNode(edgeString));
         }
         this.tree.updateUI();
-    }
-    
-    protected void setTextOfStatusArea(String s){
-        this.statusArea.append("\n" + s);
     }
     
     protected void clearInfoPanel(){

@@ -478,7 +478,21 @@ public class MainGUI extends JFrame implements ActionListener{
         }
         else if(event.getSource() == clearButton){
             if(JOptionPane.showConfirmDialog(this,"Are you sure to clear the workspace?\n","CAUTION", JOptionPane.YES_NO_OPTION)==0){
-                this.infoPanel.clearInfoPanel();
+                
+                if(this.insertEdgeButton.isSelected())
+                    this.insertEdgeButton.doClick();
+                
+                if(this.insertNodeButton.isSelected())
+                    this.insertNodeButton.doClick();
+                
+                if(this.removeNodesButton.isSelected())
+                    this.removeNodesButton.doClick();
+                
+                if(this.removeEdgesButton.isSelected())
+                    this.removeEdgesButton.doClick();
+                
+                if(this.moveButton.isSelected())
+                    this.moveButton.doClick();
                 
                 this.graphPanel.setMovable(false);
                 this.graphPanel.setRemovable(false,false);
@@ -489,6 +503,8 @@ public class MainGUI extends JFrame implements ActionListener{
                     else
                         zoomOut();
                 }
+                
+                this.infoPanel.clearInfoPanel();
                 Controller.getInstance().update("clearGraph");
             }
         }
@@ -519,6 +535,7 @@ public class MainGUI extends JFrame implements ActionListener{
     
     
     //mostra i bottoni a seconda della situazione dei nodi
+    
     protected void showButtons(boolean b){
         this.saveButton.setVisible(b);
         this.removeNodesButton.setVisible(b);

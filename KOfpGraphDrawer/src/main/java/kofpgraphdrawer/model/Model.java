@@ -84,9 +84,12 @@ public class Model implements IModel {
     public boolean addEdge(Point point1, Point point2) {
         if(graph == null)
             graph = new Graph();
+        
         boolean notFoundSameEdge = true;
+        
         boolean foundPoint1 = false;
         int index1 =0;
+        
         boolean foundPoint2 = false;
         int index2 = 0;
         
@@ -100,23 +103,23 @@ public class Model implements IModel {
         }
         
         //Cerco i 2 nodi per creare l'arco (se esistono)
-        for(Node n : graph.getNodeList()){
-            if(n.getCoordinates().equals(point1)){
+        for(int i=0; i<graph.getNodeList().size(); i++){
+            if(graph.getNodeList().get(i).getCoordinates().equals(point1)){
                 foundPoint1 = true;
-                index1 = graph.getNodeList().indexOf(n);
+                index1 = i;
             }
-            else if(n.getCoordinates().equals(point2)){
+            else if(graph.getNodeList().get(i).getCoordinates().equals(point2)){
                 foundPoint2 = true;
-                index2 = graph.getEdgeList().indexOf(n);
+                index2 = i;
             }
             
         }
         
         boolean result=false;
         
-        if(notFoundSameEdge && foundPoint1 && foundPoint2)
+        if(notFoundSameEdge && foundPoint1 && foundPoint2){
             result = graph.addEdge(new Edge(graph.getNodeList().get(index1),graph.getNodeList().get(index2)));
-        
+        }
         return result;
     }
 

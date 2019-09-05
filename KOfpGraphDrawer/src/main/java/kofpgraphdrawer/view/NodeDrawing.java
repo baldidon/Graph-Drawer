@@ -25,14 +25,6 @@ public class NodeDrawing /*extends AbstractDrawing*/{
     protected boolean isSelected;
     
     
-    
-    //costruttore da rimuovere
-    protected NodeDrawing(GraphPanel graphPanel){
-        this.graphPanel = graphPanel;
-        this.isSelected = false;
-        this.node = new Rectangle2D.Double();
-    }
-    
     //costruttore, dove gli passo le coordinate del centro del nodo relative rispetto al centro del pannello
     protected NodeDrawing(Point p, GraphPanel graphPanel){
         this.graphPanel = graphPanel;
@@ -49,8 +41,8 @@ public class NodeDrawing /*extends AbstractDrawing*/{
     protected void draw(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
         
-        this.setRect(this.graphPanel.getWidth()/2 + this.getNodeX()*MainGUI.scaleFactor - DEFAULT_DIMENSION/2, 
-                this.graphPanel.getHeight()/2 + this.getNodeY()*MainGUI.scaleFactor - DEFAULT_DIMENSION/2);
+        this.setRect(this.graphPanel.X_CENTER + this.getNodeX()*MainGUI.scaleFactor - DEFAULT_DIMENSION/2, 
+                this.graphPanel.Y_CENTER + this.getNodeY()*MainGUI.scaleFactor - DEFAULT_DIMENSION/2);
         
         g2d.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING,

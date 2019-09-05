@@ -33,16 +33,16 @@ public class View implements IView{
     @Override
     public Point[] edgeToAdd() {
         Point[] points = new Point[2];
-        points[1] = mainGUI.getGraphPanel().getP1();
-        points[2] = mainGUI.getGraphPanel().getP2();
+        points[0] = mainGUI.getGraphPanel().getP1();
+        points[1] = mainGUI.getGraphPanel().getP2();
         return points;
     }
 
     @Override
     public Point[] edgeToDel() {
         Point[] points = new Point[2];
-        points[1] = mainGUI.getGraphPanel().getP1();
-        points[2] = mainGUI.getGraphPanel().getP2();
+        points[0] = mainGUI.getGraphPanel().getP1();
+        points[1] = mainGUI.getGraphPanel().getP2();
         return points;
     }
 
@@ -76,13 +76,12 @@ public class View implements IView{
     
     @Override
     public void refreshGUI() {
-        
-        if(Controller.getInstance().getGraphNodes().isEmpty())
-            mainGUI.showButtons(false);
-        else
+        if(!Controller.getInstance().getGraphNodes().isEmpty())
             mainGUI.showButtons(true);
-        
-        //sono sicuro che questi qua devono starci sicuramente
+
+        //metodi per riaggiornare la GUI
+        this.getInfoPanel().clearStatusArea();
+        this.updateTree();
         mainGUI.getGraphPanel().revalidate();
         mainGUI.getGraphPanel().repaint();
     }
@@ -109,6 +108,14 @@ public class View implements IView{
               mainGUI = new MainGUI();
           mainGUI.setVisible(true);
       });
+    }
+    
+    
+    private void updateTree(){
+        for(String toAdd : Controller.getInstance().getNodesLabels())
+            mainGUI.getInfoPanel().addNodeToStatusArea(toAdd);
+        for(String toAdd : Controller.getInstance().getEdgesLabels())
+            mainGUI.getInfoPanel().addEdgeToStatusArea(toAdd);
     }
     
 

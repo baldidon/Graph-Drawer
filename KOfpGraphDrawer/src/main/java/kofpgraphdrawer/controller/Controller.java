@@ -123,6 +123,8 @@ public class Controller implements IController{
                 
             case "clearGraph":
                 result = Model.getInstance().clearGraph();
+                break;
+            
             default :
                 View.getInstance().setError("Function not found!");
                 result=false;

@@ -27,13 +27,19 @@ public class EdgeDrawing{
         this.isSelected = false;
         this.p1 = p1;
         this.p2 = p2;
-        this.p1.setLocation((p1.getX()+this.graphPanel.getWidth()/2)*MainGUI.getScaleFactor(), (p1.getY()+this.graphPanel.getHeight()/2)*MainGUI.getScaleFactor());
-        this.p2.setLocation((p2.getX()+this.graphPanel.getWidth()/2)*MainGUI.getScaleFactor(), (p2.getY()+this.graphPanel.getHeight()/2)*MainGUI.getScaleFactor());
-        this.edge = new Line2D.Double(this.p1.getX(),this.p1.getY() , this.p2.getX(), this.p2.getY());
+        
+        this.edge = new Line2D.Double(this.p1.getX() + this.graphPanel.X_CENTER
+                ,this.p1.getY() , this.p2.getX(), this.p2.getY());
     }
 
     protected void draw(Graphics g) {
             Graphics2D g2d = (Graphics2D)g;
+            
+            this.edge.setLine(this.p1.getX()*MainGUI.scaleFactor + this.graphPanel.X_CENTER, 
+                    this.p1.getY()*MainGUI.scaleFactor + this.graphPanel.Y_CENTER, 
+                    this.p2.getX()*MainGUI.scaleFactor + this.graphPanel.X_CENTER, 
+                    this.p2.getY()*MainGUI.scaleFactor + this.graphPanel.Y_CENTER);
+            
             g2d.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON

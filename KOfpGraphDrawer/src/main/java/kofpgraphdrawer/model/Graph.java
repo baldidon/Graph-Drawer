@@ -79,17 +79,31 @@ public class Graph /*implements GraphInterface*/{
     
     public boolean delNode(Node n){
     	nodes--;
+        
+        boolean result=false;
+        
     	int index=n.getVectorIndex();
     	for (int i=index+1; i<nodeList.size(); i++){
     		//DA TESTARE NON NE SONO CERTO, CAST MOLTO FORZATO
     		//Questa ciclo serve per scalare l'indice a tutti i nodi che seguono quello da eliminare
-    		Node tempNode = (Node)nodeList.get(i);
+    		Node tempNode = nodeList.get(i);
     		tempNode.setVectorIndex(i-1);
     	}
     	if (nodeList.remove(n.getVectorIndex())==n)
-    		return true;
-    	else
-    		return false;
+    		result=true;
+        
+        if(result){
+            Iterator<Edge> it = edgeList.iterator();
+            
+            while(it.hasNext()){
+                Edge e = it.next();
+                if(e.getNode1().equals(n) || e.getNode2().equals(n)){
+                    it.remove();
+                }
+            }
+        } 
+        
+        return result;
     }
 
     public boolean addEdge(Edge e){
@@ -100,18 +114,6 @@ public class Graph /*implements GraphInterface*/{
     
 
     public boolean delEdge(Edge e){
-    	/*edges--;
-        int index=e.getVectorIndex();
-        for (int i=index; i<edgeList.size(); i++){
-            //Questa ciclo serve per scalare l'indice a tutti i nodi che seguono quello da eliminare
-            Edge tempEdge = edgeList.get(i);
-            tempEdge.setVectorIndex(i-1);
-        }
-        if (edgeList.remove(e.getVectorIndex())==e)
-            return true;
-        else
-            return false;
-        */
         String s = e.getLabel();
         Iterator<Edge> it = edgeList.iterator();
             while (it.hasNext()) {
