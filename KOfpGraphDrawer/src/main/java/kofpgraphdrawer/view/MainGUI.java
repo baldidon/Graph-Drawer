@@ -149,61 +149,73 @@ public class MainGUI extends JFrame implements ActionListener{
         this.toolBar.setFloatable(false);
         
         this.saveButton = new JButton(new ImageIcon(this.getPathImage("save.png"))); 
+        this.saveButton.setToolTipText(SAVE_FILE);
         this.saveButton.addActionListener(this);  
         this.toolBar.add(saveButton);
         this.saveButton.setVisible(false);
         
         this.loadButton = new JButton(new ImageIcon(this.getPathImage("load.png")));
+        this.loadButton.setToolTipText(LOAD_FILE);
         this.loadButton.addActionListener(this);
         this.toolBar.add(loadButton);
         
         //deve diventare un jtoggle
         this.insertNodeButton = new JToggleButton(new ImageIcon(this.getPathImage("addNode.png")),false);
+        this.insertNodeButton.setToolTipText(INSERT_NODE);
         this.insertNodeButton.addActionListener(this);
         this.toolBar.add(insertNodeButton);
         
         this.insertEdgeButton = new JToggleButton(new ImageIcon(this.getPathImage("addEdge.png")),false);
+        this.insertEdgeButton.setToolTipText(INSERT_EDGE);
         this.insertEdgeButton.addActionListener(this);
         this.toolBar.add(insertEdgeButton);
         this.insertEdgeButton.setVisible(false);
         
         this.zoomInButton = new JButton(new ImageIcon(this.getPathImage("zoomIn.png")));
+        this.insertEdgeButton.setToolTipText(ZOOM_IN);
         this.zoomInButton.addActionListener(this);
         this.toolBar.add(zoomInButton);
         this.zoomInButton.setVisible(false);
         
         this.zoomOutButton = new JButton(new ImageIcon(this.getPathImage("zoomOut.png")));
+        this.insertEdgeButton.setToolTipText(ZOOM_OUT);
         this.zoomOutButton.addActionListener(this);
         this.toolBar.add(zoomOutButton);
         this.zoomOutButton.setVisible(false);
      
 
         this.doCliqueButton = new JButton(new ImageIcon(this.getPathImage("doClique.png")));
+        this.insertEdgeButton.setToolTipText(DO_CLIQUE);
         this.doCliqueButton.addActionListener(this);
         this.toolBar.add(doCliqueButton);
         this.doCliqueButton.setVisible(false);
         
         this.removeNodesButton = new JToggleButton(new ImageIcon(this.getPathImage("delNode.png")),false);
+        this.insertEdgeButton.setToolTipText(REMOVE_NODES);
         this.removeNodesButton.addActionListener(this);
         this.toolBar.add(removeNodesButton);
         this.removeNodesButton.setVisible(false);
         
         this.removeEdgesButton = new JToggleButton(new ImageIcon(this.getPathImage("delEdge.png")),false);
+        this.insertEdgeButton.setToolTipText(REMOVE_EDGES);
         this.removeEdgesButton.addActionListener(this);
         this.toolBar.add(removeEdgesButton);
         this.removeEdgesButton.setVisible(false);
         
         this.moveButton = new JToggleButton(new ImageIcon(this.getPathImage("move.png")),false);
+        this.insertEdgeButton.setToolTipText(MOVE);
         this.moveButton.addActionListener(this);
         this.toolBar.add(moveButton);
         this.moveButton.setVisible(false);
         
         this.clearButton = new JButton(new ImageIcon(this.getPathImage("clear.png")));
+        this.insertEdgeButton.setToolTipText(CLEAR);
         this.clearButton.addActionListener(this);
         this.toolBar.add(clearButton);
         this.clearButton.setVisible(false);
         
         this.fanPlanarButton = new JButton(new ImageIcon(this.getPathImage("KFP.png")));
+        this.insertEdgeButton.setToolTipText("FAN PLANARITY");
         this.fanPlanarButton.addActionListener(this);
         this.toolBar.add(fanPlanarButton);
         this.fanPlanarButton.setVisible(false);
@@ -272,11 +284,7 @@ public class MainGUI extends JFrame implements ActionListener{
             fileHandler = new GMLFileHandler(this,LOAD_FILE,FileDialog.LOAD);
             filePath = fileHandler.getPathFile();
             if(Controller.getInstance().update("loadFromFile")){
-                this.infoPanel.setTextOfLogArea("File imported succesfully!");
-                //da mettere nel refreshGUI()
-                //View.getInstance().
-                //this.graphPanel.repaint();
-            }
+                this.infoPanel.setTextOfLogArea("File imported succesfully!");            }
             else
                 this.infoPanel.setTextOfLogArea("Error in importing file!");
         }

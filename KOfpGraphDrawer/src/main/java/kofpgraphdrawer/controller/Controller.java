@@ -116,7 +116,7 @@ public class Controller implements IController{
                 }
                 else{
                     Model.getInstance().loadFromFile(filePath);
-                    result=false;
+                    result=true;
                 }
                 break;
                 
