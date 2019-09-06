@@ -166,7 +166,8 @@ public class Controller implements IController{
         return Model.getInstance().getKFPEdges();
     }
     
-    private Point generatePoint(int index, int length){
+    @Override
+    public Point generatePoint(int index, int length){
         
         double t = 2 * Math.PI * index / length;
         int x = (int) Math.round(View.getInstance().getRadius()* Math.cos(t));

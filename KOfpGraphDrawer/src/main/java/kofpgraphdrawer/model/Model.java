@@ -2,7 +2,7 @@ package kofpgraphdrawer.model;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Iterator;
+import kofpgraphdrawer.controller.Controller;
 
 public class Model implements IModel {
     
@@ -197,6 +197,12 @@ public class Model implements IModel {
     public boolean loadFromFile(String filePath) {
        boolean result=true;
        result=graph.nodeFromFile();
+       int length = graph.getNodeList().size();
+       for(int i =0; i<graph.getNodeList().size(); i++){
+           Node n = graph.getNodeList().get(i);
+           Point auxPoint = Controller.getInstance().generatePoint(i,length);
+           n.setCoordinates(auxPoint.x,auxPoint.y);
+       }
        if(result)
         result=graph.edgeFromFile();
        return result;
