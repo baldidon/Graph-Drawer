@@ -15,8 +15,12 @@ public class Model implements IModel {
             graph = new Graph();
         
         String ID = Integer.toString(Node.ID_TO_ASSIGN);
-        Node.ID_TO_ASSIGN++;
-        return graph.addNode(new Node(point.x, point.y, ID, ID));
+        boolean result = graph.addNode(new Node(point.x, point.y, ID, ID));
+                
+        if(result) 
+            graph.checkNodesOrder();
+       
+        return result;
     }
 
     @Override
@@ -49,6 +53,8 @@ public class Model implements IModel {
                 break;
             }
         }
+        
+        graph.checkNodesOrder();
         
         return ris;
     }

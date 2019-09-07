@@ -1,7 +1,10 @@
 package kofpgraphdrawer.model;
 
+import java.awt.Point;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import kofpgraphdrawer.view.View;
@@ -26,10 +29,7 @@ public class Graph /*implements GraphInterface*/{
         //uso una linkedList per avere le stringhe del file letto
         protected LinkedList<String> listOfStringByFile = null;
 	
-	//Variabili che contano il numero di archi e il numero di punti all'interno del grafo. 
 	
-	protected int edges=0;
-	protected int nodes=0;
         protected boolean isAFanPlanarGraph = false;
         //diventa true se la funzione trova che non c'è rappresentazione antifan
         protected static Graph graph = null;
@@ -71,27 +71,17 @@ public class Graph /*implements GraphInterface*/{
         return addNode(new Node(0,0,ID, label));
     }
     
-    public boolean addNode(Node n){
-    	nodes++;
-    	n.setVectorIndex(nodeList.size());
-    	return nodeList.add(n);
+    public boolean addNode(Node n){      
+        return nodeList.add(n);
     }
     
     public boolean delNode(Node n){
-    	nodes--;
-        
         boolean result=false;
-        
-    	int index=n.getVectorIndex();
-    	for (int i=index+1; i<nodeList.size(); i++){
-    		//DA TESTARE NON NE SONO CERTO, CAST MOLTO FORZATO
-    		//Questa ciclo serve per scalare l'indice a tutti i nodi che seguono quello da eliminare
-    		Node tempNode = nodeList.get(i);
-    		tempNode.setVectorIndex(i-1);
-    	}
-    	if (nodeList.remove(n.getVectorIndex())==n)
+
+    	if (nodeList.remove(n))
     		result=true;
         
+        //Rimuovo tutti gli archi connessi al nodo
         if(result){
             Iterator<Edge> it = edgeList.iterator();
             
@@ -107,7 +97,6 @@ public class Graph /*implements GraphInterface*/{
     }
 
     public boolean addEdge(Edge e){
-    	edges++;
     	e.setVectorIndex(edgeList.size()+1);
     	return edgeList.add(e);
     }
@@ -267,106 +256,80 @@ public class Graph /*implements GraphInterface*/{
         
         
         public boolean isFanPlanar(int k){
-		
-		//Lista che contiene gli archi indipendenti
-		ArrayList<Edge> indEdgeList;
-		//arco temporaneo, serve dopo
-		Edge tempEdge;
-                Edge temp1Edge;
-                Edge temp2Edge;
-		//arco di riferimento: il primo da fissare, per poi lavorare
-		Edge refEdge;
-		//Variabile che conta gli archi rimossi. Utile perchè se ne rimuove 0, allora sono tutti indipendenti
-		int count;
-		//Variabile che conta gli archi indipendenti
-		int independentEdges=0;
-                //Variabile per arrestare l'analisi
-                boolean toContinue=true;
-		//Variabile che conta le intersezioni tra archi indipendenti
-		int intersections=0;
-		//Variabile risultato
-		boolean ris=true;
+            
+            //evito computazioni inutili, isPossible ci dice se dobbiamo analizzarlo oppure no
+            boolean isPossible=false;
+            boolean result = true; 
+            
+            //Intero che serve per controllare la condizione
+            int intersections=0;
+            
+            if(this.nodeList.size()>=(2*k+2))
+                isPossible=true;
+            
+                           
+            //Lista di archi indipendenti da restituire
+            ArrayList<Edge> indEdgeList= new ArrayList<>();
+            
+            //Studio il numero di intersezioni tra archi indipendenti
+            if(isPossible){
+                /*
+                ELIMINO ARCHI CON NODI CONSECUTIVI
+                */
+                //Lista di archi interni (esclude quelli formati da due nodi consecutivi)
+                ArrayList<Edge> internalEdges = (ArrayList<Edge>) this.edgeList.clone();
+                //Elimino gli archi sopra descritti
+                Iterator<Edge> it = internalEdges.iterator();
+                while(it.hasNext()){
+                    Edge e = it.next();
+                    int nOfNodes = this.nodeList.size();
+                    for(int index=0; index<nOfNodes; index++){
 
-		//Ciclo che analizzando fissando il primo arco, quello che nell'algoritmo viene definito arco di riferimento
-		for (int i=0; i<this.edgeList.size(); i++){
-                    //Suppongo tutti gli archi indipendenti, e poi rimuovo quelli che non lo sono
-                    indEdgeList = (ArrayList<Edge>) this.edgeList.clone();
-                    //arco di riferimento fissato, archi rimossi imposti uguali a 0
-                    refEdge = this.edgeList.get(i);
-                    count=0;
-                    toContinue=true;
-	
-                    while(toContinue){
-                        //Escludo tutti gli archi che partono da uno dei due nodi di quello fissato (tranno l'arco di riferimento, ovviamente)
-                        for (int j=0; j<indEdgeList.size(); j++){
-                            //Mi accerto di non lavorare sull'arco di riferimento
-                            if (indEdgeList.get(j)!=this.edgeList.get(i)){
-                                tempEdge = indEdgeList.get(j);
-                                if(tempEdge.getNode1() == refEdge.getNode1() || tempEdge.getNode1() == refEdge.getNode2() || tempEdge.getNode2() == refEdge.getNode1() || tempEdge.getNode2() == refEdge.getNode2()){
-                                    indEdgeList.remove(tempEdge);
-                                    count++;
-                                }
-                            }
-                        }
-                      
-                        if (count==0){
-                            toContinue = false;
-                        }
-                        count=0;
+                        //Controllo vero e proprio
+                        if(e.contains(this.nodeList.get(index%nOfNodes)) && e.contains(this.nodeList.get((index+1)%nOfNodes)))
+                            it.remove();
                     }
-                   
-                    
-                    //Ripeto lo stesso procedimento per tutti le possibili coppie di archi rimanenti
-                    for (int j=0; j<indEdgeList.size(); j++){
-                        temp1Edge = indEdgeList.get(j);
-                        count=0;
-                        toContinue=true;
-                        while(toContinue){
-                            for (int n=0; n<indEdgeList.size(); n++)
-                                //Mi accerto di non lavorare sullo stesso arco
-                                if (j!=n){
-                                    temp2Edge = indEdgeList.get(n);
-                                    if(temp1Edge.getNode1() == temp2Edge.getNode1() || temp1Edge.getNode1() == temp2Edge.getNode2() || temp1Edge.getNode2() == temp2Edge.getNode1() || temp1Edge.getNode2() == temp2Edge.getNode2()){
-                                        indEdgeList.remove(temp2Edge);
-                                        count++;
-                                    }
-                                }
-                            if (count==0){
-                                toContinue = false;
-                            }
-                            count=0;
-                        }
-                    }
-			
-                    /*if(indEdgeList.size()>independentEdges){
-                        independentEdges = indEdgeList.size();
-                    }//Fine dell'analisi per l'arco fissato*/
+                }
 
-                    /*
-                    //Conta il numero di intersezioni tra gli archi indipendenti
-                    for (int l=0; l<indEdgeList.size()-1; l++){
-			for (int m=l+1; m<indEdgeList.size(); m++){
-                            if(indEdgeList.get(l).cross(indEdgeList.get(m))){
-				intersections++;
-                            }
-                        }
-                    }*/
-                                      
-                    for (int l=0; l<indEdgeList.size(); l++){
-                        if (indEdgeList.get(l).cross(refEdge) && indEdgeList.get(l)!=refEdge){
-                            intersections++;
-                        }
-                    }
+                /*
+                PRENDO ARCO DI RIFERIMENTO
+                */
+                int numberOfNodes=this.nodeList.size();         
+                for(int kValues=k+1; kValues<=numberOfNodes/2; kValues++){
                     
-                    if(intersections>k){
-                    	ris=false;
-                        this.kfpEdgeList = (ArrayList<Edge>) indEdgeList.clone();
-			break;
-                    }else{
-			intersections=0;
+                    //LAVORO SULLA POSSIBILE COPPIA DI NODI
+                    for(int i=0; i<numberOfNodes; i++){
+                        Node tempN1 = this.nodeList.get(i);
+                        Node tempN2 = this.nodeList.get((i+kValues)%numberOfNodes);
+                        //Arco di riferimento (in base al quale contare le intersezioni)
+                        Edge refEdge=null;
+                        indEdgeList.clear();
+                        
+                        //Verifico se c'è un arco tra due nodi a distanza almeno k
+                        for (int j=0; j<internalEdges.size(); j++){                 
+                            //Ho trovato un potenziale arco di riferimento per una configurazione proibita
+                            if (internalEdges.get(j).contains(tempN1) && internalEdges.get(j).contains(tempN2)){
+                                refEdge = internalEdges.get(j);
+                                System.out.println(refEdge.toString());
+                            }
+                            if(!internalEdges.get(j).contains(tempN1) && !internalEdges.get(j).contains(tempN2))
+                                indEdgeList.add(internalEdges.get(j));
+                        }
+                        
+                        if(refEdge!=null){
+                            //Selezioni gli archi che intersecano refEdge
+                            
+                        }
+                        
                     }
-		}
-		return ris;
+                }
+                
+            }
+            
+            this.kfpEdgeList = (ArrayList<Edge>) indEdgeList.clone();
+            
+            return false;
+            
 	}
         
         public ArrayList<Edge> getKfpEdgeList(){
@@ -429,4 +392,23 @@ public class Graph /*implements GraphInterface*/{
     	return result;
         }
         
+        /*
+        Metodo per riordinare la disposizione degli angoli;
+        Il primo che viene fissato è quello in angolo 0, si continua poi in senso orario
+        */
+        protected void checkNodesOrder(){
+            Collections.sort(this.nodeList, new SortByAngle());
+            
+            for(Node n:nodeList){
+                double angle = Math.atan2(n.getCoordinates().getY(), n.getCoordinates().getX());
+            }
+        }
+        
+        class SortByAngle implements Comparator<Node> { 
+            // Used for sorting in ascending order of angle 
+            public int compare(Node n1, Node n2) 
+            { 
+                return (int)(n1.angle-n2.angle);
+            } 
+        } 
 }

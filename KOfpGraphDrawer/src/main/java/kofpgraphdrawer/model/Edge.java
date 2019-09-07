@@ -78,4 +78,11 @@ public class Edge{
 	public String toString(){
 		return "Edge from " + this.n1.getID() + " to " + this.n2.getID() + "\r\n";
 	}
+        
+        protected boolean contains(Node n){
+            if(n.equals(this.n1) || n.equals(this.n2))
+                return true;
+            else
+                return false;
+        }
 }

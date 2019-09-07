@@ -10,25 +10,18 @@ public class Node{
 	private Point point;
         private String id;
 	private String label;
-	private int edgeNumber;
-	private int vectorIndex;
-        
+        protected double angle;
+
         //COSTRUTTORE 1
 	public Node(int x, int y,String ID, String label){
 		this.point = new Point(x, y);
                 this.id = ID;
 		this.label = label;
-		this.edgeNumber=0;
+                Node.ID_TO_ASSIGN++;
+                this.angle=Math.toDegrees(Math.atan2(y, x));
+                if(this.angle<0)
+                    this.angle+=360;
 	}
-        
-        //COSTRUTTORE 2
-        //il punto nullo ce lo metto comunque, così posso assegnarli in futuro delle coordinates
-        public Node(String ID, String label){
-            this.point = new Point(0,0);
-            this.id = ID;
-            this.label = label;
-            this.edgeNumber = 0;
-        }
 
 	public String getLabel(){
 		return this.label;
@@ -37,17 +30,9 @@ public class Node{
         public String getID(){
             return this.id;
         }
-        
-	public int getEdgeNumber(){
-		return this.edgeNumber;
-	}
 
 	public Point getCoordinates(){
 		return this.point;
-	}
-
-	public int getVectorIndex(){
-		return this.vectorIndex;
 	}
 
 	public String setLabel(String label){
@@ -59,20 +44,36 @@ public class Node{
         this.id = ID;
     }
 
-	public int setEdgeNumber(){
-		this.edgeNumber++;
-		return this.edgeNumber;
-	}
-
 	public void setCoordinates(double x, double y){
 		this.point.setLocation(x, y);
+                this.angle=Math.toDegrees(Math.atan2(y, x));
+                if(this.angle<0)
+                    this.angle+=360;
 		//return this.point;
 	}
-
-	public int setVectorIndex(int index){
-		this.vectorIndex = index;
-		return this.vectorIndex;
-	}
+        
+        /*Metodo per sistemare le posizioni dei nodi aggiunti
+        args: 1-added: nodo appena aggiunto
+              2-listPoint: nodo all'interno della lista
+        ret:  true se added va messo prima di listPoint
+              false se added va messo dopo di listPoint
+        */
+        public boolean isBefore(Node listPoint){
+            Point listPointToCheck = listPoint.getCoordinates();
+            
+            double thisNodeAngle=Math.atan2(this.point.getY(), this.point.getX());
+            double listPointToCheckAngle=Math.atan2(listPointToCheck.getY(), listPointToCheck.getX()); 
+            
+            if (thisNodeAngle<0)
+                thisNodeAngle+=(Math.PI*2);
+            if (listPointToCheckAngle<0)
+                listPointToCheckAngle+=(Math.PI*2);
+            
+            if(thisNodeAngle<listPointToCheckAngle)
+                return true;
+            else
+                return false;
+        }
 
 	public String toString(){
 		return "Nodo: " + this.label + "\r\n" /*+ "Coordinate: (" + this.point.getX() + ", " + this.point.getY() + ")\r\n"*/;
