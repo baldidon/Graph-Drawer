@@ -152,6 +152,10 @@ public class Graph /*implements GraphInterface*/{
         //funziona
         public boolean nodeFromFile(){
             this.stringFromFile();
+            
+            //per liberare la lista da nodi indesiderati
+            this.nodeList.clear();
+            
             String auxiliaryId;
             String auxiliaryLabel;
             boolean result=true;
@@ -189,6 +193,10 @@ public class Graph /*implements GraphInterface*/{
         //funziona
         public boolean edgeFromFile(){
             stringFromFile();
+            
+                        
+            //per liberare la lista da nodi indesiderati
+            this.edgeList.clear();
             
             boolean result=true;
             

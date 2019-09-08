@@ -172,38 +172,38 @@ public class MainGUI extends JFrame implements ActionListener{
         this.insertEdgeButton.setVisible(false);
         
         this.zoomInButton = new JButton(new ImageIcon(this.getPathImage("zoomIn.png")));
-        this.insertEdgeButton.setToolTipText(ZOOM_IN);
+        this.zoomInButton.setToolTipText(ZOOM_IN);
         this.zoomInButton.addActionListener(this);
         this.toolBar.add(zoomInButton);
         this.zoomInButton.setVisible(false);
         
         this.zoomOutButton = new JButton(new ImageIcon(this.getPathImage("zoomOut.png")));
-        this.insertEdgeButton.setToolTipText(ZOOM_OUT);
+        this.zoomOutButton.setToolTipText(ZOOM_OUT);
         this.zoomOutButton.addActionListener(this);
         this.toolBar.add(zoomOutButton);
         this.zoomOutButton.setVisible(false);
      
 
         this.doCliqueButton = new JButton(new ImageIcon(this.getPathImage("doClique.png")));
-        this.insertEdgeButton.setToolTipText(DO_CLIQUE);
+        this.doCliqueButton.setToolTipText(DO_CLIQUE);
         this.doCliqueButton.addActionListener(this);
         this.toolBar.add(doCliqueButton);
         this.doCliqueButton.setVisible(false);
         
         this.removeNodesButton = new JToggleButton(new ImageIcon(this.getPathImage("delNode.png")),false);
-        this.insertEdgeButton.setToolTipText(REMOVE_NODES);
+        this.removeNodesButton.setToolTipText(REMOVE_NODES);
         this.removeNodesButton.addActionListener(this);
         this.toolBar.add(removeNodesButton);
         this.removeNodesButton.setVisible(false);
         
         this.removeEdgesButton = new JToggleButton(new ImageIcon(this.getPathImage("delEdge.png")),false);
-        this.insertEdgeButton.setToolTipText(REMOVE_EDGES);
+        this.removeEdgesButton.setToolTipText(REMOVE_EDGES);
         this.removeEdgesButton.addActionListener(this);
         this.toolBar.add(removeEdgesButton);
         this.removeEdgesButton.setVisible(false);
         
         this.moveButton = new JToggleButton(new ImageIcon(this.getPathImage("move.png")),false);
-        this.insertEdgeButton.setToolTipText(MOVE);
+        this.moveButton.setToolTipText(MOVE);
         this.moveButton.addActionListener(this);
         this.toolBar.add(moveButton);
         this.moveButton.setVisible(false);
@@ -215,7 +215,7 @@ public class MainGUI extends JFrame implements ActionListener{
         this.clearButton.setVisible(false);
         
         this.fanPlanarButton = new JButton(new ImageIcon(this.getPathImage("KFP.png")));
-        this.insertEdgeButton.setToolTipText("FAN PLANARITY");
+        this.fanPlanarButton.setToolTipText("FAN PLANARITY");
         this.fanPlanarButton.addActionListener(this);
         this.toolBar.add(fanPlanarButton);
         this.fanPlanarButton.setVisible(false);
